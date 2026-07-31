@@ -37,3 +37,91 @@ enum ExperienceLevel {
   confirmed
   experienced
 }
+
+enum WalkTime {
+  LESS_THAN_30MIN
+  BETWEEN_30MIN_1H
+  BETWEEN_1H_2H
+  MORE_THAN_2H
+}
+
+enum HomePresence {
+  FULL_TIME        // télétravail, retraité, présent quasi toute la journée
+  PART_TIME        // présent une partie de la journée (mi-temps, horaires flexibles)
+  EVENINGS_ONLY     // absent la journée, présent seulement le soir/weekend
+  VARIABLE          // horaires irréguliers (ex: shifts, déplacements fréquents)
+}
+
+
+// Models - Authentification & Utilisateurs
+
+model User {
+  id          Int          @id @default(autoincrement())
+  email       String       @unique
+  password    String       
+  phone       String?      @db.VarChar(20)
+  createdAt   DateTime     @default(now()) @map("created_at")
+
+  volunteer   Volunteer?
+  association Association?
+
+  @@map("users")
+}
+
+model Volunteer {
+  userId                  Int               @id @map("user_id")
+  user                    User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  lastName                String            @map("last_name") @db.VarChar(50)
+  firstName               String            @map("first_name") @db.VarChar(50)
+  imageUrl                String?           @map("image_url") @db.Text
+  address                 String?           @db.VarChar(150)
+  city                    String            @db.VarChar(100)
+  postalCode              String?           @map("postal_code") @db.VarChar(10)
+
+  housingType             HousingType?      @map("housing_type")
+  housingSize             Int?              @map("housing_size")
+  hasGarden               Boolean           @default(false) @map("has_garden")
+  gardenSize              Int?              @map("garden_size")
+  walkTime                WalkTime?         @map("walk_time")
+  homePresence             HomePresence?     @map("home_presence")
+  experienceLevel         ExperienceLevel?  @map("experience_level")
+  experienceDescription   String?           @map("experience_description") @db.Text
+  monthlyBudget           Decimal?          @map("monthly_budget") @db.Decimal(6, 2)
+
+  householdPets           HouseholdPet[]
+  fosterRequests          FosterRequest[]
+
+  @@map("volunteers")
+}
+
+model Association {
+  userId        Int      @id @map("user_id")
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name          String   @map("name") @db.VarChar(150)
+  imageUrl      String?  @map("image_url") @db.Text
+
+  // Facultatif à l'inscription : une association peut publier sans SIRET
+  // (ex: petit collectif non enregistré). NULL reste unique en Postgres,
+  // plusieurs associations peuvent donc ne pas en avoir.
+
+  siret         String?  @unique @db.VarChar(14)
+
+  description   String?  @db.Text
+  address       String?  @db.VarChar(150)
+  city          String   @db.VarChar(100)
+  postalCode    String?  @map("postal_code") @db.VarChar(10)
+  openingHours  String?  @map("opening_hours") @db.Text
+
+  // Géocodées automatiquement (API Adresse) à l'inscription/mise à jour du
+  // profil, pour la recherche par ville + rayon côté animaux. NULL si le
+  // géocodage a échoué : l'association est alors exclue des recherches par
+  // distance mais reste visible normalement partout ailleurs.
+  latitude      Float?
+  longitude     Float?
+
+  animals       Animal[]
+
+  @@map("associations")
+}
