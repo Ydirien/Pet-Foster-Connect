@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client"
   output   = "./generated"
@@ -13,8 +12,8 @@ datasource db {
 // -----------------------------
 
 enum Gender {
-  M
-  F
+  male
+  female
 }
 
 enum AnimalStatus {
@@ -27,6 +26,7 @@ enum RequestStatus {
   pending
   accepted
   rejected
+  cancelled 
 }
 
 enum HousingType {
@@ -41,17 +41,17 @@ enum ExperienceLevel {
 }
 
 enum WalkTime {
-  LESS_THAN_30MIN
-  BETWEEN_30MIN_1H
-  BETWEEN_1H_2H
-  MORE_THAN_2H
+  less_than_30min
+  between_30min_1h
+  between_1h_2h
+  more_than_2h
 }
 
 enum HomePresence {
-  FULL_TIME        // télétravail, retraité, présent quasi toute la journée
-  PART_TIME        // présent une partie de la journée (mi-temps, horaires flexibles)
-  EVENINGS_ONLY     // absent la journée, présent seulement le soir/weekend
-  VARIABLE          // horaires irréguliers (ex: shifts, déplacements fréquents)
+  full_time
+  part_time
+  evenings_only
+  variable
 }
 
 // -----------------------------
@@ -61,17 +61,17 @@ enum HomePresence {
 model User {
   id          Int          @id @default(autoincrement())
   email       String       @unique
-  password    String       
+  password    String
   phone       String?      @db.VarChar(20)
   createdAt   DateTime     @default(now()) @map("created_at")
 
-  volunteer   Volunteer?
+  foster      Foster?
   association Association?
 
   @@map("users")
 }
 
-model Volunteer {
+model Foster {
   userId                  Int               @id @map("user_id")
   user                    User              @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -95,7 +95,7 @@ model Volunteer {
   householdPets           HouseholdPet[]
   fosterRequests          FosterRequest[]
 
-  @@map("volunteers")
+  @@map("fosters")
 }
 
 model Association {
@@ -185,17 +185,17 @@ model AnimalIncompatibleSpecies {
   @@map("animal_incompatible_species")
 }
 
-// Animaux déjà présents chez le bénévole (hors plateforme)
+// Animaux déjà présents chez la famille d'accueil (hors plateforme)
 model HouseholdPet {
-  id          Int       @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   age         Int?
-  neutered    Boolean   @default(false)
+  neutered    Boolean @default(false)
 
-  volunteerId Int       @map("volunteer_id")
-  volunteer   Volunteer @relation(fields: [volunteerId], references: [userId], onDelete: Cascade)
+  fosterId    Int     @map("foster_id")
+  foster      Foster  @relation(fields: [fosterId], references: [userId], onDelete: Cascade)
 
-  speciesId   Int       @map("species_id")
-  species     Species   @relation(fields: [speciesId], references: [id], onDelete: Restrict)
+  speciesId   Int     @map("species_id")
+  species     Species @relation(fields: [speciesId], references: [id], onDelete: Restrict)
 
   @@map("household_pets")
 }
@@ -205,19 +205,16 @@ model HouseholdPet {
 // -----------------------------
 
 model FosterRequest {
-  id            Int            @id @default(autoincrement())
-  requestedAt   DateTime       @default(now()) @map("requested_at")
-  status        RequestStatus  @default(pending)
-  message       String?        @db.Text
+  id            Int           @id @default(autoincrement())
+  requestedAt   DateTime      @default(now()) @map("requested_at")
+  status        RequestStatus @default(pending)
+  message       String?       @db.Text
 
-  volunteerId   Int            @map("volunteer_id")
-  volunteer     Volunteer      @relation(fields: [volunteerId], references: [userId], onDelete: Cascade)
+  fosterId      Int           @map("foster_id")
+  foster        Foster        @relation(fields: [fosterId], references: [userId], onDelete: Cascade)
 
-  animalId      Int            @map("animal_id")
-  animal        Animal         @relation(fields: [animalId], references: [id], onDelete: Cascade)
-
-  associationReview AssociationReview?
-  volunteerReview   VolunteerReview?
+  animalId      Int           @map("animal_id")
+  animal        Animal        @relation(fields: [animalId], references: [id], onDelete: Cascade)
 
   @@map("foster_requests")
 }
