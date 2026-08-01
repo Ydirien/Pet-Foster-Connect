@@ -67,6 +67,8 @@ model User {
 
   foster      Foster?
   association Association?
+  refreshTokens  RefreshToken[]
+  passwordResetTokens  PasswordResetToken[]
 
   @@map("users")
 }
@@ -217,4 +219,31 @@ model FosterRequest {
   animal        Animal        @relation(fields: [animalId], references: [id], onDelete: Cascade)
 
   @@map("foster_requests")
+}
+
+
+// -----------------------------
+// Token & reset password
+// -----------------------------
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String
+  userId    Int      @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  issuedAt  DateTime @default(now()) @map("issued_at") @db.Timestamptz
+  expiresAt DateTime @map("expires_at") @db.Timestamptz
+
+  @@map("refresh_tokens")
+}
+
+model PasswordResetToken {
+  id        Int      @id @default(autoincrement())
+  token     String
+  userId    Int      @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  issuedAt  DateTime @default(now()) @map("issued_at") @db.Timestamptz
+  expiresAt DateTime @map("expires_at") @db.Timestamptz
+
+  @@map("password_reset_tokens")
 }
