@@ -108,3 +108,39 @@ export async function registerUser(req: Request, res: Response) {
         profile: input.role === "foster" ? user.foster : user.association,
     });
 }
+
+export async function loginUser(req: Request, res: Response) {
+    const loginUserBodySchema = z.object({
+        email: z.email(),
+        password: z.string(),
+    });
+
+    const { email, password } = await loginUserBodySchema.parseAsync(req.body);
+
+    const user = await prisma.user.findFirst({
+        where: { email },
+        include: { foster: true, association: true },
+    });
+
+    if (!user) {
+        throw new UnauthorizedError("Email ou mot de passe incorrect");
+    }
+
+    const isMatching = await argon2.verify(user.password, password);
+
+    if (!isMatching) {
+        throw new UnauthorizedError("Email ou mot de passe incorrect");
+    }
+
+    const role = user.foster ? "foster" : "association";
+
+    const accessToken = generateAccessToken({ id: user.id, role }, config.accessTokenSecret);
+    const refreshToken = generateRefreshToken();
+
+    await replaceRefreshTokenInDatabase(refreshToken, user.id);
+
+    setAccessTokenCookie(res, accessToken);
+    setRefreshTokenCookie(res, refreshToken);
+
+    res.json({ accessToken, refreshToken });
+}
