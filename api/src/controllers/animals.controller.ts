@@ -106,3 +106,28 @@ export async function listAnimals(req: Request, res: Response) {
 
     res.json(results);
 }
+
+export async function getAnimalDetail(req: Request, res: Response) {
+    const slug = parseSlugParam(req.params.slug);
+    const id = parseIdFromSlug(slug);
+    if (id === null) throw new NotFoundError("Animal introuvable");
+
+    const animal = await prisma.animal.findUnique({
+        where: { id },
+        include: {
+            species: true,
+            association: { select: { userId: true, name: true, imageUrl: true, city: true } },
+            incompatibleSpecies: { include: { species: true } },
+        },
+    });
+    if (!animal) throw new NotFoundError("Animal introuvable");
+
+    res.json({
+        ...animal,
+        slug: buildSlug(animal.id, animal.name),
+        association: {
+            ...animal.association,
+            slug: buildSlug(animal.association.userId, animal.association.name),
+        },
+    });
+}
