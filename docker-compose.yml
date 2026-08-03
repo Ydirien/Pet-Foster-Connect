@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: petfosterconnect-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: petfosterconnect
+    ports:
+      - "5432:5432"
+    volumes:
+      - petfosterconnect-data:/var/lib/postgresql/data
+
+volumes:
+  petfosterconnect-data:
