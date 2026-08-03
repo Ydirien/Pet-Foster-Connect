@@ -1,11 +1,18 @@
 import argon2 from "argon2";
-import type { Request , Response } from "express";
-import { prisma } from "../models/index.ts"
-import type { RefreshToken, User } from "../models/index.ts"
+import type { Request, Response } from "express";
+import { prisma } from "../models/index.ts";
 import z from "zod";
 import { config } from "../../config.ts";
 import { ConflictError, UnauthorizedError } from "../lib/errors.ts";
-import { generateAccessToken,generateRefreshToken,generateResetPasswordToken,setAccessTokenCookie,setRefreshTokenCookie ,type Token } from "../lib/tokens.ts";
+import { mailer } from "../lib/mailer.ts";
+import {
+    generateAccessToken,
+    generateRefreshToken,
+    generateResetPasswordToken,
+    setAccessTokenCookie,
+    setRefreshTokenCookie,
+    type Token,
+} from "../lib/tokens.ts";
 
 const passwordSchema = z
     .string()
@@ -17,36 +24,36 @@ const passwordSchema = z
 export async function registerUser(req: Request, res: Response) {
     const registerUserBodySchema = z
         .discriminatedUnion("role", [
-        z.object({
-            role: z.literal("foster"),
-            firstName: z.string().min(2),
-            lastName: z.string().min(2),
-            email: z.email(),
-            password: passwordSchema,
-            confirm: z.string(),
-            city: z.string().min(1),
-            address: z.string().optional(),
-            postalCode: z.string().optional(),
-            phone: z.string().optional(),
-        }),
-        z.object({
-            role: z.literal("association"),
-            name: z.string().min(2),
-            email: z.email(),
-            password: passwordSchema,
-            confirm: z.string(),
-            city: z.string().min(1),
-            address: z.string().optional(),
-            postalCode: z.string().optional(),
-            phone: z.string().optional(),
-            siret: z.string().regex(/^\d{14}$/, "Le SIRET doit contenir 14 chiffres").optional(),
-            description: z.string().optional(),
-            openingHours: z.string().optional(),
-        }),
+            z.object({
+                role: z.literal("foster"),
+                firstName: z.string().min(2),
+                lastName: z.string().min(2),
+                email: z.email(),
+                password: passwordSchema,
+                confirm: z.string(),
+                city: z.string().min(1),
+                address: z.string().optional(),
+                postalCode: z.string().optional(),
+                phone: z.string().optional(),
+            }),
+            z.object({
+                role: z.literal("association"),
+                name: z.string().min(2),
+                email: z.email(),
+                password: passwordSchema,
+                confirm: z.string(),
+                city: z.string().min(1),
+                address: z.string().optional(),
+                postalCode: z.string().optional(),
+                phone: z.string().optional(),
+                siret: z.string().regex(/^\d{14}$/, "Le SIRET doit contenir 14 chiffres").optional(),
+                description: z.string().optional(),
+                openingHours: z.string().optional(),
+            }),
         ])
         .refine(data => data.password === data.confirm, {
-        message: "Les mots de passe ne correspondent pas",
-        path: ["confirm"],
+            message: "Les mots de passe ne correspondent pas",
+            path: ["confirm"],
         });
 
     const input = await registerUserBodySchema.parseAsync(req.body);
@@ -59,7 +66,7 @@ export async function registerUser(req: Request, res: Response) {
     if (input.role === "association" && input.siret) {
         const existingSiret = await prisma.association.findUnique({ where: { siret: input.siret } });
         if (existingSiret) {
-        throw new ConflictError("Ce SIRET est déjà utilisé");
+            throw new ConflictError("Ce SIRET est déjà utilisé");
         }
     }
 
@@ -67,34 +74,34 @@ export async function registerUser(req: Request, res: Response) {
 
     const user = await prisma.user.create({
         data: {
-        email: input.email,
-        password: passwordHash,
-        phone: input.phone ?? null,
-        ...(input.role === "foster"
-            ? {
-                foster: {
-                create: {
-                    firstName: input.firstName,
-                    lastName: input.lastName,
-                    city: input.city,
-                    address: input.address ?? null,
-                    postalCode: input.postalCode ?? null,
-                },
-                },
-            }
-            : {
-                association: {
-                create: {
-                    name: input.name,
-                    siret: input.siret ?? null,
-                    city: input.city,
-                    address: input.address ?? null,
-                    postalCode: input.postalCode ?? null,
-                    description: input.description ?? null,
-                    openingHours: input.openingHours ?? null,
-                },
-                },
-            }),
+            email: input.email,
+            password: passwordHash,
+            phone: input.phone ?? null,
+            ...(input.role === "foster"
+                ? {
+                        foster: {
+                            create: {
+                                firstName: input.firstName,
+                                lastName: input.lastName,
+                                city: input.city,
+                                address: input.address ?? null,
+                                postalCode: input.postalCode ?? null,
+                            },
+                        },
+                    }
+                : {
+                        association: {
+                            create: {
+                                name: input.name,
+                                siret: input.siret ?? null,
+                                city: input.city,
+                                address: input.address ?? null,
+                                postalCode: input.postalCode ?? null,
+                                description: input.description ?? null,
+                                openingHours: input.openingHours ?? null,
+                            },
+                        },
+                    }),
         },
         include: { foster: true, association: true },
     });
@@ -211,14 +218,13 @@ export async function forgotPassword(req: Request, res: Response) {
     await prisma.passwordResetToken.deleteMany({ where: { userId: user.id } });
     await prisma.passwordResetToken.create({
         data: {
-        token: resetToken.token,
-        userId: user.id,
-        expiresAt: new Date(Date.now() + resetToken.expiresInMS),
+            token: resetToken.token,
+            userId: user.id,
+            expiresAt: new Date(Date.now() + resetToken.expiresInMS),
         },
     });
 
-    // TODO: envoyer resetToken.token par email au lieu de le logger.
-    console.log(`Lien de réinitialisation pour ${email} : ${resetToken.token}`);
+    await mailer.sendResetPasswordEmail(email, resetToken.token);
 
     res.status(204).end();
 }
@@ -255,16 +261,16 @@ async function deriveRole(userId: number) {
         include: { foster: true, association: true },
     });
     return user?.foster ? "foster" : "association";
-    }
+}
 
-    async function replaceRefreshTokenInDatabase(refreshToken: Token, userId: number) {
+async function replaceRefreshTokenInDatabase(refreshToken: Token, userId: number) {
     await prisma.refreshToken.deleteMany({ where: { userId } });
     await prisma.refreshToken.create({
         data: {
-        token: refreshToken.token,
-        userId,
-        issuedAt: new Date(),
-        expiresAt: new Date(Date.now() + refreshToken.expiresInMS),
+            token: refreshToken.token,
+            userId,
+            issuedAt: new Date(),
+            expiresAt: new Date(Date.now() + refreshToken.expiresInMS),
         },
     });
 }
