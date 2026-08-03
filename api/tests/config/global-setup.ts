@@ -4,48 +4,73 @@ import { after, before, beforeEach, type TestContext } from "node:test";
 import { app } from "../../src/app.ts";
 import { prisma } from "../../src/models/index.ts";
 
-// === AVANT le lancement des tests ===
-// Création d'une BDD de test Docker, chargement de .env.test, migrations, lancement du serveur
-// === Entre chaque test === on vide les tables
-// === APRES les tests === déconnexion Prisma, arrêt serveur, suppression du conteneur
-
-let server: Server;
+let server: Server | undefined;
 
 before(() => {
-    execSync(`docker rm -f petfosterconnecttest 2>/dev/null || true`);
+    // Supprime le conteneur de test s'il existe déjà (nettoyage préventif).
+    // Sur Windows, execSync passe par cmd.exe qui ne comprend pas la syntaxe
+    // bash "2>/dev/null || true" : on utilise un try/catch à la place, qui
+    // fonctionne pareil sur Windows, Mac et Linux.
+    try {
+        execSync(`docker rm -f petfosterconnecttest`, { stdio: "ignore" });
+    } catch {
+        // Le conteneur n'existait pas encore, rien à faire.
+    }
 
-    execSync(`
-        docker run \
-        -d \
-        --name petfosterconnecttest \
-        -p ${process.env.POSTGRES_PORT}:5432 \
-        -e POSTGRES_USER=${process.env.POSTGRES_USER} \
-        -e POSTGRES_PASSWORD=${process.env.POSTGRES_PASSWORD} \
-        -e POSTGRES_DB=${process.env.POSTGRES_DB} \
-        postgres:17
-    `);
+    // Créer un conteneur BDD dédié aux tests (commande sur une seule ligne :
+    // les retours à la ligne avec "\" sont une syntaxe bash, pas garantie sous Windows).
+    execSync(
+        `docker run -d --name petfosterconnecttest -p ${process.env.POSTGRES_PORT}:5432 -e POSTGRES_USER=${process.env.POSTGRES_USER} -e POSTGRES_PASSWORD=${process.env.POSTGRES_PASSWORD} -e POSTGRES_DB=${process.env.POSTGRES_DB} postgres:17`,
+    );
 
-    execSync(`
-        until docker exec petfosterconnecttest pg_isready -U ${process.env.POSTGRES_USER} > /dev/null 2>&1; do
-            sleep 0.5
-        done
-    `);
+    // Attendre que PostgreSQL soit prêt à accepter des connexions. La boucle
+    // "until ... do ... done" du script d'origine est du bash : on la remplace
+    // par une boucle JS qui retente pg_isready toutes les 500ms.
+    waitForPostgresReady();
 
+    // Lancer les migrations sur la BDD de test
     execSync(`npx prisma migrate deploy`);
 
+    // On lance un serveur de test
     server = app.listen(process.env.PORT);
 });
 
 beforeEach(async (t) => {
     (t as TestContext).mock.method(console, "info", () => {});
+
     await truncateTables();
 });
 
 after(async () => {
-    server.close();
+    server?.close();
+
     await prisma.$disconnect();
+
     execSync(`docker rm -f petfosterconnecttest`);
 });
+
+function waitForPostgresReady() {
+    const maxAttempts = 60;
+
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+        try {
+            execSync(`docker exec petfosterconnecttest pg_isready -U ${process.env.POSTGRES_USER}`, {
+                stdio: "ignore",
+            });
+            return; // pg_isready a répondu avec succès, Postgres est prêt
+        } catch {
+            // Pas encore prêt, on retente après une courte pause.
+        }
+        sleepSync(500);
+    }
+
+    throw new Error("PostgreSQL n'a pas démarré à temps");
+}
+
+// Pause synchrone cross-platform (pas de sleep natif bloquant en Node).
+function sleepSync(ms: number) {
+    Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
 
 async function truncateTables() {
     await prisma.$executeRawUnsafe(`
