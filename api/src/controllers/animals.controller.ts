@@ -131,3 +131,59 @@ export async function getAnimalDetail(req: Request, res: Response) {
         },
     });
 }
+
+// req.file est fourni par le middleware uploadAnimalImage (multer), en amont.
+export async function uploadImage(req: Request, res: Response) {
+    let relativePath: string;
+    try {
+        relativePath = await saveOptimizedAnimalImage(req.file!.buffer);
+    } catch {
+        throw new BadRequestError("Fichier image invalide ou corrompu");
+    }
+
+    const imageUrl = `${req.protocol}://${req.get("host")}${relativePath}`;
+    res.status(201).json({ imageUrl });
+}
+
+export async function createAnimal(req: Request, res: Response) {
+    const animalImageUrlSchema = z
+        .url()
+        .max(255)
+        .refine((url) => isOwnProcessedImageUrl(url, "animals"), {
+            message: "L'image doit provenir de POST /api/animaux/upload",
+        });
+
+    const createAnimalSchema = z.object({
+        name: z.string().min(1).max(100),
+        breed: z.string().max(50).optional(),
+        gender: z.enum(["male", "female"]),
+        neutered: z.boolean().optional(),
+        age: z.number().int().min(0).max(100).optional(),
+        behavior: z.string().optional(),
+        specificNeeds: z.string().optional(),
+        imageUrl: animalImageUrlSchema.optional(),
+        speciesId: z.number().int().positive(),
+        incompatibleSpeciesIds: z.array(z.number().int().positive()).optional(),
+    });
+
+    const input = await createAnimalSchema.parseAsync(req.body);
+    const { incompatibleSpeciesIds = [], ...fields } = input;
+
+    await assertSpeciesExist([fields.speciesId, ...incompatibleSpeciesIds]);
+
+    const animal = await prisma.animal.create({
+        data: {
+            ...fields,
+            associationId: req.user.id,
+            incompatibleSpecies: {
+                create: incompatibleSpeciesIds.map((speciesId) => ({ speciesId })),
+            },
+        },
+        include: {
+            species: true,
+            incompatibleSpecies: { include: { species: true } },
+        },
+    });
+
+    res.status(201).json({ ...animal, slug: buildSlug(animal.id, animal.name) });
+}
