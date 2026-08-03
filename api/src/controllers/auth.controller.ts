@@ -144,3 +144,24 @@ export async function loginUser(req: Request, res: Response) {
 
     res.json({ accessToken, refreshToken });
 }
+
+export async function logoutUser(req: Request, res: Response) {
+    await prisma.refreshToken.deleteMany({ where: { userId: req.user.id } });
+    res.clearCookie("accessToken");
+    res.clearCookie("refreshToken", { path: "/api/auth/refresh" });
+    res.status(204).end();
+}
+
+export async function getAuthenticatedUser(req: Request, res: Response) {
+    const user = await prisma.user.findUnique({
+        where: { id: req.user.id },
+        omit: { password: true },
+        include: { foster: true, association: true },
+    });
+
+    if (!user) {
+        throw new UnauthorizedError("Token payload doesn't match any user");
+    }
+
+    res.json(user);
+}
