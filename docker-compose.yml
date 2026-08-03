@@ -1,16 +1,88 @@
 services:
-  postgres:
+  db:
+    # Nom explicite : "database" tout court entre en collision avec d'autres projets (ex: CineDelices)
+    container_name: petfosterconnect_db
     image: postgres:17
-    container_name: petfosterconnect-db
     restart: unless-stopped
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: petfosterconnect
-    ports:
-      - "5432:5432"
     volumes:
-      - petfosterconnect-data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - ${POSTGRES_LOCAL_PORT}:5432
+    networks:
+      - petfosterconnect-network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: petfosterconnect_api
+    volumes:
+      - ./api:/app
+      - /app/node_modules
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ./api/.env
+    environment:
+      # Écrase DATABASE_URL du .env : dans Docker, la DB est joignable via le nom du service "db" sur le port interne 5432
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+    ports:
+      - ${API_LOCAL_PORT}:3000
+
+    networks:
+      - petfosterconnect-network
+
+  front:
+    build:
+      context: ./cli
+      dockerfile: Dockerfile
+    container_name: petfosterconnect_front
+    restart: always
+    environment:
+      # Résolu depuis le navigateur de l'hôte, pas depuis le réseau Docker :
+      # le nom de service "api" n'y est pas joignable, localhost + le port publié si.
+      VITE_API_URL: ${VITE_API_URL}
+      # Docker Desktop (Windows/Mac) ne propage pas toujours les évènements
+      # inotify du bind mount vers le conteneur : sans ça, Vite ne détecte pas
+      # les modifications de fichiers et sert du code périmé jusqu'au restart.
+      CHOKIDAR_USEPOLLING: "true"
+      CHOKIDAR_INTERVAL: "300"
+    ports:
+      - ${CLIENT_LOCAL_PORT}:5173
+    volumes:
+      - ./cli:/app
+      - /app/node_modules
+    depends_on:
+      api:
+        condition: service_started
+    networks:
+      - petfosterconnect-network
+
+  adminer:
+    image: adminer
+    restart: unless-stopped
+    ports:
+      - ${ADMINER_LOCAL_PORT}:8080
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - petfosterconnect-network
 
 volumes:
-  petfosterconnect-data:
+  db_data:
+
+networks:
+  petfosterconnect-network:
