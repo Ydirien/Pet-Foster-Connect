@@ -165,3 +165,31 @@ export async function getAuthenticatedUser(req: Request, res: Response) {
 
     res.json(user);
 }
+
+export async function refreshTokens(req: Request, res: Response) {
+    const token = req.cookies?.refreshToken || req.body?.refreshToken;
+
+    if (!token) throw new UnauthorizedError("Refresh token not provided");
+
+    const existingToken = await prisma.refreshToken.findFirst({
+        where: { token },
+        include: { user: true },
+    });
+    if (!existingToken) throw new UnauthorizedError("Invalid Refresh token");
+
+    if (existingToken.expiresAt < new Date()) {
+        await prisma.refreshToken.delete({ where: { id: existingToken.id } });
+        throw new UnauthorizedError("Invalid Refresh token");
+    }
+
+    const role = await deriveRole(existingToken.userId);
+    const accessToken = generateAccessToken({ id: existingToken.userId, role }, config.accessTokenSecret);
+    const refreshToken = generateRefreshToken();
+
+    await replaceRefreshTokenInDatabase(refreshToken, existingToken.userId);
+
+    setAccessTokenCookie(res, accessToken);
+    setRefreshTokenCookie(res, refreshToken);
+
+    res.json({ accessToken, refreshToken });
+}
