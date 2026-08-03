@@ -7,7 +7,7 @@
     "dev": "node --watch --env-file=.env index.ts",
     "start": "node --env-file=.env index.ts",
     "docker:start": "npx prisma migrate deploy && node index.ts",
-    "test": "node --test --env-file=./test/config/.env.test --import ./test/config/global-setup.ts --experimental-test-isolation=none \"src/**/*.spec.test.ts\"",
+    "test": "node --test --env-file=./tests/config/.env.test --import ./tests/config/global-setup.ts --experimental-test-isolation=none \"src/**/*.spec.test.ts\"",
     "lint": "oxlint",
     "typecheck": "tsc --noEmit",
     "db:generate": "prisma generate",

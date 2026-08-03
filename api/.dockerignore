@@ -1,0 +1,4 @@
+# Quand je construis mon image, je ne veux pas y ajouter les fichiers suivants : 
+.env 
+dist
+node_modules
