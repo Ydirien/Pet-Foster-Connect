@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 import type { AuthUser } from "../types/Auth";
+import { logout as logoutRequest } from "../services/AuthService";
 
 interface AuthContextValue {
     user: AuthUser | null;
@@ -29,9 +30,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(nextUser);
     }
 
-    function logout() {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("authUser");
+    async function logout() { 
+        await logoutRequest();
         setUser(null);
     }
 
