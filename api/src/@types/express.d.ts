@@ -1,5 +1,5 @@
+import type { Logger } from "../lib/logger.ts";
 import type { Role } from "../lib/roles.ts";
-import { logger } from "../lib/logger.ts";
 
 declare global {
     namespace Express {
@@ -9,7 +9,7 @@ declare global {
                 role: Role;
             };
             requestId?: string;
-            log: typeof logger;
+            log: Logger;
         }
     }
 }
