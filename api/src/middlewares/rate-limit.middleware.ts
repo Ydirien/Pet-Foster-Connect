@@ -29,6 +29,8 @@ function makeLimiter(limit: number) {
         limit: shouldBypassLimit ? 1000 : limit,
         message: MESSAGE,
         store,
+        standardHeaders: "draft-6",
+        legacyHeaders: false,
     });
 }
 
