@@ -193,3 +193,78 @@ export async function refreshTokens(req: Request, res: Response) {
 
     res.json({ accessToken, refreshToken });
 }
+
+export async function forgotPassword(req: Request, res: Response) {
+    const forgotPasswordBodySchema = z.object({ email: z.email() });
+    const { email } = await forgotPasswordBodySchema.parseAsync(req.body);
+
+    const user = await prisma.user.findFirst({ where: { email } });
+
+    // Email inconnu : on répond quand même 204, pour ne pas révéler si le compte existe.
+    if (!user) {
+        res.status(204).end();
+        return;
+    }
+
+    const resetToken = generateResetPasswordToken();
+
+    await prisma.passwordResetToken.deleteMany({ where: { userId: user.id } });
+    await prisma.passwordResetToken.create({
+        data: {
+        token: resetToken.token,
+        userId: user.id,
+        expiresAt: new Date(Date.now() + resetToken.expiresInMS),
+        },
+    });
+
+    // TODO: envoyer resetToken.token par email au lieu de le logger.
+    console.log(`Lien de réinitialisation pour ${email} : ${resetToken.token}`);
+
+    res.status(204).end();
+}
+
+export async function resetPassword(req: Request, res: Response) {
+    const resetPasswordBodySchema = z.object({
+        token: z.string().min(1),
+        newPassword: passwordSchema,
+    });
+
+    const { token, newPassword } = await resetPasswordBodySchema.parseAsync(req.body);
+
+    const existingToken = await prisma.passwordResetToken.findFirst({ where: { token } });
+
+    if (!existingToken || existingToken.expiresAt < new Date()) {
+        throw new UnauthorizedError("Lien de réinitialisation invalide ou expiré");
+    }
+
+    const passwordHash = await argon2.hash(newPassword);
+
+    await prisma.user.update({
+        where: { id: existingToken.userId },
+        data: { password: passwordHash },
+    });
+
+    await prisma.passwordResetToken.delete({ where: { id: existingToken.id } });
+
+    res.status(204).end();
+}
+
+async function deriveRole(userId: number) {
+    const user = await prisma.user.findUnique({
+        where: { id: userId },
+        include: { foster: true, association: true },
+    });
+    return user?.foster ? "foster" : "association";
+    }
+
+    async function replaceRefreshTokenInDatabase(refreshToken: Token, userId: number) {
+    await prisma.refreshToken.deleteMany({ where: { userId } });
+    await prisma.refreshToken.create({
+        data: {
+        token: refreshToken.token,
+        userId,
+        issuedAt: new Date(),
+        expiresAt: new Date(Date.now() + refreshToken.expiresInMS),
+        },
+    });
+}
