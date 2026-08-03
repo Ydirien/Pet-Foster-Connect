@@ -20,3 +20,14 @@ async function assertSpeciesExist(ids: number[]) {
         throw new BadRequestError("Espèce inconnue");
     }
 }
+
+// Charge l'animal et vérifie la propriété : 404 s'il n'existe pas,
+// 403 si l'association connectée n'en est pas propriétaire.
+async function getOwnedAnimal(animalId: number, requesterId: number) {
+    const animal = await prisma.animal.findUnique({ where: { id: animalId } });
+    if (!animal) throw new NotFoundError("Animal introuvable");
+    if (animal.associationId !== requesterId) {
+        throw new ForbiddenError("Vous n'êtes pas propriétaire de cette ressource");
+    }
+    return animal;
+}
