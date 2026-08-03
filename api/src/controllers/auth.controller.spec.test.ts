@@ -2,7 +2,7 @@ import assert from "node:assert";
 import { describe, it } from "node:test";
 import argon2 from "argon2";
 import { prisma } from "../models/index.ts";
-import { anonymousRequester, buildAuthedRequester } from "../../test/index.ts";
+import { anonymousRequester, buildAuthedRequester } from "../../tests/index.ts";
 
 let counter = 0;
 
