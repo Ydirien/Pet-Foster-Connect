@@ -187,3 +187,79 @@ export async function createAnimal(req: Request, res: Response) {
 
     res.status(201).json({ ...animal, slug: buildSlug(animal.id, animal.name) });
 }
+
+export async function updateAnimal(req: Request, res: Response) {
+    const animalId = await parseIdFromParams(req.params.id);
+    const animal = await getOwnedAnimal(animalId, req.user.id);
+
+    const animalImageUrlSchema = z
+        .url()
+        .max(255)
+        .refine((url) => isOwnProcessedImageUrl(url, "animals"), {
+            message: "L'image doit provenir de POST /api/animaux/upload",
+        });
+
+    // Tous les champs optionnels ; le statut peut aussi être ajusté manuellement.
+    const updateAnimalSchema = z.object({
+        name: z.string().min(1).max(100).optional(),
+        breed: z.string().max(50).optional(),
+        gender: z.enum(["male", "female"]).optional(),
+        neutered: z.boolean().optional(),
+        age: z.number().int().min(0).max(100).optional(),
+        behavior: z.string().optional(),
+        specificNeeds: z.string().optional(),
+        imageUrl: animalImageUrlSchema.optional(),
+        speciesId: z.number().int().positive().optional(),
+        incompatibleSpeciesIds: z.array(z.number().int().positive()).optional(),
+        status: z.enum(["available", "in_foster_care", "completed"]).optional(),
+    });
+
+    const input = await updateAnimalSchema.parseAsync(req.body);
+    const { incompatibleSpeciesIds, ...fields } = input;
+
+    // Seule transition manuelle de statut autorisée : marquer l'accueil comme
+    // terminé une fois qu'il est en cours. Les autres transitions (mise en
+    // accueil, remise à disponible) passent par la validation d'une demande
+    // d'accueil, pour ne pas désynchroniser le statut de l'animal.
+    if (fields.status !== undefined && fields.status !== animal.status) {
+        const isCompletingFosterCare = animal.status === "in_foster_care" && fields.status === "completed";
+        if (!isCompletingFosterCare) {
+            throw new BadRequestError("Transition de statut invalide pour cet animal");
+        }
+    }
+
+    await assertSpeciesExist([
+        ...(fields.speciesId !== undefined ? [fields.speciesId] : []),
+        ...(incompatibleSpeciesIds ?? []),
+    ]);
+
+    const updated = await prisma.$transaction(async (tx) => {
+        // Si la liste est fournie, elle remplace intégralement l'existante.
+        if (incompatibleSpeciesIds !== undefined) {
+            await tx.animalIncompatibleSpecies.deleteMany({ where: { animalId } });
+            if (incompatibleSpeciesIds.length > 0) {
+                await tx.animalIncompatibleSpecies.createMany({
+                    data: incompatibleSpeciesIds.map((speciesId) => ({ animalId, speciesId })),
+                });
+            }
+        }
+
+        return tx.animal.update({
+            where: { id: animalId },
+            data: fields,
+            include: {
+                species: true,
+                incompatibleSpecies: { include: { species: true } },
+            },
+        });
+    });
+
+    res.json({ ...updated, slug: buildSlug(updated.id, updated.name) });
+}
+
+export async function deleteAnimal(req: Request, res: Response) {
+    const animalId = await parseIdFromParams(req.params.id);
+    await getOwnedAnimal(animalId, req.user.id);
+    await prisma.animal.delete({ where: { id: animalId } });
+    res.status(204).end();
+}
