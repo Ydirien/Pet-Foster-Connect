@@ -3,6 +3,8 @@ import { prisma } from "../models/index.ts";
 import z from "zod";
 import { haversineDistanceKm } from "../lib/geo.ts";
 import { buildSlug, parseIdFromSlug } from "../lib/slug.ts";
+import { parseIdFromParams, parseSlugParam } from "./utils.ts";
+import { NotFoundError, ForbiddenError, BadRequestError } from "../lib/errors.ts";
 
 // GET /api/associations : recherche par ville + rayon (façon Leboncoin), les
 // trois paramètres doivent être fournis ensemble, sinon ils sont ignorés.
@@ -36,4 +38,32 @@ export async function listAssociations(req: Request, res: Response) {
             slug: buildSlug(association.userId, association.name),
         })),
     );
+}
+
+// GET /api/associations/:slug : détail public, inclut les animaux disponibles.
+export async function getAssociationDetail(req: Request, res: Response) {
+    const slug = parseSlugParam(req.params.slug);
+    const id = parseIdFromSlug(slug);
+    if (id === null) throw new NotFoundError("Association introuvable");
+
+    const association = await prisma.association.findUnique({
+        where: { userId: id },
+        include: {
+            animals: {
+                where: { status: "available" },
+                include: { species: true },
+            },
+            user: { select: { email: true, phone: true } },
+        },
+    });
+    if (!association) throw new NotFoundError("Association introuvable");
+
+    res.json({
+        ...association,
+        slug: buildSlug(association.userId, association.name),
+        animals: association.animals.map((animal) => ({
+            ...animal,
+            slug: buildSlug(animal.id, animal.name),
+        })),
+    });
 }
