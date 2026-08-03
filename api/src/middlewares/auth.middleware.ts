@@ -2,15 +2,14 @@ import type { Request, Response, NextFunction, RequestHandler } from "express";
 import { verifyAccessToken } from "../lib/tokens.ts";
 import type { Role } from "../lib/roles.ts";
 import { UnauthorizedError, ForbiddenError } from "../lib/errors.ts";
-
-const JWT_SECRET = process.env.JWT_SECRET as string;
+import { config } from "../../config.ts";
 
 // Middleware qui vérifie que l'utilisateur est bien connecté (token JWT valide)
 export function authenticate(req: Request, res: Response, next: NextFunction) {
     const token = extractAccessToken(req);
 
     try {
-        req.user = verifyAccessToken(token, JWT_SECRET);
+        req.user = verifyAccessToken(token, config.accessTokenSecret);
     } catch (err) {
         console.error("Echec de vérification du token:", err);
         throw new UnauthorizedError("Token d'accès invalide ou expiré");
