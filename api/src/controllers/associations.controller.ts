@@ -5,6 +5,8 @@ import { haversineDistanceKm } from "../lib/geo.ts";
 import { buildSlug, parseIdFromSlug } from "../lib/slug.ts";
 import { parseIdFromParams, parseSlugParam } from "./utils.ts";
 import { NotFoundError, ForbiddenError, BadRequestError } from "../lib/errors.ts";
+import { saveOptimizedProfileImage, isOwnProcessedImageUrl } from "../lib/image-processing.ts";
+
 
 // GET /api/associations : recherche par ville + rayon (façon Leboncoin), les
 // trois paramètres doivent être fournis ensemble, sinon ils sont ignorés.
@@ -66,4 +68,17 @@ export async function getAssociationDetail(req: Request, res: Response) {
             slug: buildSlug(animal.id, animal.name),
         })),
     });
+}
+
+// req.file est fourni par le middleware uploadProfileImage (multer), en amont.
+export async function uploadImage(req: Request, res: Response) {
+    let relativePath: string;
+    try {
+        relativePath = await saveOptimizedProfileImage(req.file!.buffer);
+    } catch {
+        throw new BadRequestError("Fichier image invalide ou corrompu");
+    }
+
+    const imageUrl = `${req.protocol}://${req.get("host")}${relativePath}`;
+    res.status(201).json({ imageUrl });
 }
