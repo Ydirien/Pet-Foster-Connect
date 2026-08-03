@@ -3,6 +3,7 @@ import type { Server } from "node:http";
 import { after, before, beforeEach, type TestContext } from "node:test";
 import { app } from "../../src/app.ts";
 import { prisma } from "../../src/models/index.ts";
+import { resetRateLimiters } from "../../src/middlewares/rate-limit.middleware.ts";
 
 let server: Server | undefined;
 
@@ -37,7 +38,7 @@ before(() => {
 
 beforeEach(async (t) => {
     (t as TestContext).mock.method(console, "info", () => {});
-
+    resetRateLimiters();
     await truncateTables();
 });
 
