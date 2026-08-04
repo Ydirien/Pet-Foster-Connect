@@ -2,9 +2,9 @@ import { Routes, Route } from "react-router-dom";
 import { ProtectedRoute } from "../components/auth/ProtectedRoute";
 
 import { Home } from "../pages/home/Home";
-import { Animaux } from "../pages/animaux/Animaux";
-import { AnimalDetail } from "../pages/animalDetail/AnimalDetail";
-import { PublishAnimal } from "../pages/animaux/PublishAnimal";
+import { Animals } from "../pages/animals/Animals";
+import { AnimalDetail } from "../pages/animal-detail/AnimalDetail";
+import { PublishAnimal } from "../pages/animals/PublishAnimal";
 import { Associations } from "../pages/associations/Associations";
 import { AssociationDetail } from "../pages/associations/AssociationDetail";
 import { Login } from "../pages/auth/Login";
@@ -14,8 +14,8 @@ import { ResetPassword } from "../pages/auth/ResetPassword";
 import { Account } from "../pages/account/Account";
 import { EditProfile } from "../pages/account/EditProfile";
 import { CandidateProfile } from "../pages/account/CandidateProfile";
-import { FosterRequests } from "../pages/demandes/FosterRequests";
-import { FosterRequestDetail } from "../pages/demandes/FosterRequestDetail";
+import { FosterRequests } from "../pages/foster-requests/FosterRequests";
+import { FosterRequestDetail } from "../pages/foster-requests/FosterRequestDetail";
 import { LegalNotice } from "../pages/legal/LegalNotice";
 import { NotFound } from "../pages/not-found/NotFound";
 

@@ -35,7 +35,7 @@ export interface AnimalFilters {
     status?: AnimalStatus;
     gender?: Gender;
     neutered?: boolean;
-    ageCategory?: "puppy" | "adult" | "senior";
+    ageCategory?: AgeCategory;
     lat?: number;
     lng?: number;
     radiusKm?: number;
@@ -57,3 +57,5 @@ export interface CreateAnimalInput {
 export type UpdateAnimalInput = Partial<CreateAnimalInput> & {
     status?: AnimalStatus;
 };
+
+export type AgeCategory = "puppy" | "adult" | "senior";
