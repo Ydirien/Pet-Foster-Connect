@@ -59,3 +59,7 @@ export type UpdateAnimalInput = Partial<CreateAnimalInput> & {
 };
 
 export type AgeCategory = "puppy" | "adult" | "senior";
+
+export interface AnimalDetail extends Animal {
+    incompatibleSpecies: { speciesId: number; species: Species}[];
+}

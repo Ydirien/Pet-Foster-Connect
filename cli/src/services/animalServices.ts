@@ -1,4 +1,4 @@
-import type { Animal, AnimalFilters, CreateAnimalInput, Species, UpdateAnimalInput } from "../types/Animal";
+import type { Animal, AnimalDetail, AnimalFilters, CreateAnimalInput, Species, UpdateAnimalInput } from "../types/Animal";
 import { authHeaders, clearAccessToken } from "./httpClient";
 
 export async function getSpecies(): Promise<Species[]> {
@@ -22,7 +22,7 @@ export async function listAnimals(filters: AnimalFilters = {}): Promise<Animal[]
     return res.json();
 }
 
-export async function getAnimalBySlug(slug: string): Promise<Animal> {
+export async function getAnimalBySlug(slug: string): Promise<AnimalDetail> {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/animaux/${slug}`);
     if (!res.ok) {
         if (res.status === 404) throw new Error("Cet animal n'existe pas ou plus.");
