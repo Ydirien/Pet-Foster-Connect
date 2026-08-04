@@ -1,3 +1,6 @@
+import type { AssociationCore } from "./Association";
+import type { FosterProfile } from "./Foster";
+
 export type UserRole = "foster" | "association";
 
 export interface AuthUser {
@@ -40,3 +43,12 @@ export type RegisterInput =
             description?: string;
             openingHours?: string;
         });
+
+        export interface CurrentUser {
+            id: number;
+            email: string;
+            phone: string | null;
+            createdAt: string;
+            role: UserRole;
+            profile: FosterProfile | AssociationCore;
+        }
