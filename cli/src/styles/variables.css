@@ -1,0 +1,17 @@
+/* ==========================================================================
+    Palette — valeurs exactes de Charte-Graphique.pdf (Pet Foster Connect).
+    Chargé globalement (main.tsx) : ne pas dupliquer dans un CSS de page/composant.
+   ========================================================================== */
+:root {
+    --creme: #F6F1E7;
+    --terracotta: #D9784F;
+    --sauge: #6B8F71;
+    --anthracite: #2B2A28;
+    --line: #E3DFD6; /* "Gris medium" de la charte */
+
+    /* Teintes dérivées : la charte ne définit pas de variantes hover/texte
+       secondaire, nécessaires pour l'UI (états :hover, libellés discrets). */
+    --terracotta-dark: #8A431F;
+    --sauge-dark: #3E5741;
+    --muted: #7A776E;
+}
