@@ -15,7 +15,6 @@ import { Account } from "../pages/account/Account";
 import { EditProfile } from "../pages/account/EditProfile";
 import { CandidateProfile } from "../pages/foster-requests/CandidateProfile";
 import { FosterRequests } from "../pages/foster-requests/FosterRequests";
-import { FosterRequestDetail } from "../pages/foster-requests/FosterRequestDetail";
 import { LegalNotice } from "../pages/legal/LegalNotice";
 import { NotFound } from "../pages/not-found/NotFound";
 
@@ -90,14 +89,6 @@ export function AppRoutes() {
                 element={
                     <ProtectedRoute>
                         <FosterRequests />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/demandes/:id"
-                element={
-                    <ProtectedRoute>
-                        <FosterRequestDetail />
                     </ProtectedRoute>
                 }
             />
