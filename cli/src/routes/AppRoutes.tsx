@@ -41,6 +41,16 @@ export function AppRoutes() {
                     </ProtectedRoute>
                 }
             />
+
+            <Route
+                path="/animaux/:slug/modifier"
+                element={
+                    <ProtectedRoute role="association">
+                        <PublishAnimal />
+                    </ProtectedRoute>
+                }
+            />
+            
             <Route
                 path="/compte"
                 element={
