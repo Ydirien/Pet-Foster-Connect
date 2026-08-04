@@ -1,0 +1,125 @@
+.association-detail-page {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+    text-align: left;
+}
+
+.association-detail-page__state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+}
+
+.association-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+    padding-bottom: 28px;
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--line);
+}
+
+.association-header__avatar {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--line);
+}
+
+.association-header__avatar--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+}
+
+.association-header__name {
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--anthracite);
+    margin: 0 0 8px;
+}
+
+.association-header__city {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--sauge-dark);
+    margin: 0 0 14px;
+}
+
+.association-header__contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.association-header__contact-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--anthracite);
+    text-decoration: none;
+}
+
+.association-header__contact-link:hover {
+    color: var(--terracotta);
+}
+
+.association-section {
+    margin-bottom: 32px;
+}
+
+.association-section__title {
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--anthracite);
+    margin: 0 0 12px;
+}
+
+.association-section__text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 0;
+}
+
+.association-section__text--pre {
+    white-space: pre-line;
+}
+
+.association-animals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+@media (min-width: 768px) {
+    .association-detail-page {
+        padding: 48px 32px 80px;
+    }
+
+    .association-header {
+        flex-direction: row;
+        text-align: left;
+        gap: 24px;
+    }
+
+    .association-header__city {
+        justify-content: flex-start;
+    }
+
+    .association-header__contact {
+        align-items: flex-start;
+    }
+}
