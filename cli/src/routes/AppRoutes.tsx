@@ -1,0 +1,89 @@
+import { Routes, Route } from "react-router-dom";
+import { ProtectedRoute } from "../components/auth/ProtectedRoute";
+
+import { Home } from "../pages/home/Home";
+import { Animaux } from "../pages/animaux/Animaux";
+import { AnimalDetail } from "../pages/animalDetail/AnimalDetail";
+import { PublishAnimal } from "../pages/animaux/PublishAnimal";
+import { Associations } from "../pages/associations/Associations";
+import { AssociationDetail } from "../pages/associations/AssociationDetail";
+import { Login } from "../pages/auth/Login";
+import { Register } from "../pages/auth/Register";
+import { ForgotPassword } from "../pages/auth/ForgotPassword";
+import { ResetPassword } from "../pages/auth/ResetPassword";
+import { Account } from "../pages/account/Account";
+import { EditProfile } from "../pages/account/EditProfile";
+import { CandidateProfile } from "../pages/account/CandidateProfile";
+import { FosterRequests } from "../pages/demandes/FosterRequests";
+import { FosterRequestDetail } from "../pages/demandes/FosterRequestDetail";
+import { LegalNotice } from "../pages/legal/LegalNotice";
+import { NotFound } from "../pages/not-found/NotFound";
+
+export function AppRoutes() {
+    return (
+        <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/animaux" element={<Animaux />} />
+            <Route path="/animaux/:slug" element={<AnimalDetail />} />
+            <Route path="/associations" element={<Associations />} />
+            <Route path="/associations/:slug" element={<AssociationDetail />} />
+
+            <Route path="/connexion" element={<Login />} />
+            <Route path="/inscription" element={<Register />} />
+            <Route path="/mot-de-passe-oublie" element={<ForgotPassword />} />
+            <Route path="/reinitialiser-mot-de-passe" element={<ResetPassword />} />
+
+            <Route
+                path="/publier-un-animal"
+                element={
+                    <ProtectedRoute role="association">
+                        <PublishAnimal />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/compte"
+                element={
+                    <ProtectedRoute>
+                        <Account />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/compte/modifier"
+                element={
+                    <ProtectedRoute role="foster">
+                        <EditProfile />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/candidats/:fosterId"
+                element={
+                    <ProtectedRoute role="association">
+                        <CandidateProfile />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/demandes"
+                element={
+                    <ProtectedRoute>
+                        <FosterRequests />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/demandes/:id"
+                element={
+                    <ProtectedRoute>
+                        <FosterRequestDetail />
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route path="/mentions-legales" element={<LegalNotice />} />
+            <Route path="*" element={<NotFound />} />
+        </Routes>
+    );
+}
