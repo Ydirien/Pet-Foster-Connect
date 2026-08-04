@@ -13,7 +13,7 @@ import { ForgotPassword } from "../pages/auth/ForgotPassword";
 import { ResetPassword } from "../pages/auth/ResetPassword";
 import { Account } from "../pages/account/Account";
 import { EditProfile } from "../pages/account/EditProfile";
-import { CandidateProfile } from "../pages/account/CandidateProfile";
+import { CandidateProfile } from "../pages/foster-requests/CandidateProfile";
 import { FosterRequests } from "../pages/foster-requests/FosterRequests";
 import { FosterRequestDetail } from "../pages/foster-requests/FosterRequestDetail";
 import { LegalNotice } from "../pages/legal/LegalNotice";
@@ -75,6 +75,16 @@ export function AppRoutes() {
                     </ProtectedRoute>
                 }
             />
+
+            <Route
+                path="/candidats/:requestId"
+                element={
+                    <ProtectedRoute role="association">
+                        <CandidateProfile />
+                    </ProtectedRoute>
+                }
+            />
+
             <Route
                 path="/demandes"
                 element={
