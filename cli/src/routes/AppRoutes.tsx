@@ -22,7 +22,7 @@ export function AppRoutes() {
     return (
         <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/animaux" element={<Animaux />} />
+            <Route path="/animaux" element={<Animals />} />
             <Route path="/animaux/:slug" element={<AnimalDetail />} />
             <Route path="/associations" element={<Associations />} />
             <Route path="/associations/:slug" element={<AssociationDetail />} />

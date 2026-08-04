@@ -1,3 +1,15 @@
+import { Link } from "react-router-dom";
+import "./Footer.css";
+
 export function Footer() {
-    return <footer>Footer</footer>;
+    return (
+        <footer className="footer">
+            <nav className="footer__links">
+                <Link to="/mentions-legales" className="footer__link">Mentions légales</Link>
+            </nav>
+            <p className="footer__copyright">
+                © {new Date().getFullYear()} Pet Foster Connect. Tous droits réservés.
+            </p>
+        </footer>
+    );
 }
