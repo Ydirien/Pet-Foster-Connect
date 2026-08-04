@@ -1,7 +1,7 @@
-import type { Animal, AnimalFilters, CreateAnimalInput, UpdateAnimalInput } from "../types/Animal";
+import type { Animal, AnimalFilters, CreateAnimalInput, Species, UpdateAnimalInput } from "../types/Animal";
 import { authHeaders, clearAccessToken } from "./httpClient";
 
-export async function getSpecies() {
+export async function getSpecies(): Promise<Species[]> {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/especes`);
     if (!res.ok) throw new Error("Impossible de récupérer la liste des espèces.");
     return res.json();
