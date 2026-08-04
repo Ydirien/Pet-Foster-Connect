@@ -10,6 +10,11 @@ export interface FosterRequest {
     fosterId: number;
     animalId: number;
     animal: Animal;
+    foster?: {
+        firstName: string;
+        lastName: string;
+        imageUrl: string | null;
+    };
 }
 
 export interface CreateFosterRequestInput {

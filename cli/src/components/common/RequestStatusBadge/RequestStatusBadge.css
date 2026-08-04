@@ -1,0 +1,4 @@
+.request-status-badge--cancelled {
+    background: var(--line);
+    color: var(--muted);
+}

@@ -44,11 +44,22 @@ export type RegisterInput =
             openingHours?: string;
         });
 
-        export interface CurrentUser {
+        interface CurrentUserBase {
             id: number;
             email: string;
             phone: string | null;
             createdAt: string;
-            role: UserRole;
-            profile: FosterProfile | AssociationCore;
         }
+
+        export interface CurrentFosterUser extends CurrentUserBase {
+            role: "foster";
+            profile: FosterProfile;
+        }
+
+        export interface CurrentAssociationUser extends CurrentUserBase {
+            role: "association";
+            profile: AssociationCore;
+        }
+
+        // Réponse de GET /api/users/me : profil complet selon le rôle.
+        export type CurrentUser = CurrentFosterUser | CurrentAssociationUser;
