@@ -3,7 +3,7 @@ import { ProtectedRoute } from "../components/auth/ProtectedRoute";
 
 import { Home } from "../pages/home/Home";
 import { Animals } from "../pages/animals/Animals";
-import { AnimalDetail } from "../pages/animal-detail/AnimalDetail";
+import { AnimalDetail } from "../pages/animals/AnimalsDetail";
 import { PublishAnimal } from "../pages/animals/PublishAnimal";
 import { Associations } from "../pages/associations/Associations";
 import { AssociationDetail } from "../pages/associations/AssociationDetail";
@@ -62,7 +62,7 @@ export function AppRoutes() {
             <Route
                 path="/compte/modifier"
                 element={
-                    <ProtectedRoute role="foster">
+                    <ProtectedRoute>
                         <EditProfile />
                     </ProtectedRoute>
                 }

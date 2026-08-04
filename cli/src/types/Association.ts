@@ -45,7 +45,7 @@ export interface AssociationCore {
     imageUrl: string | null;
     siret: string | null;
     description: string | null;
-    adress: string | null;
+    address: string | null;
     city: string;
     postalCode: string | null;
     openingHours: string | null;
