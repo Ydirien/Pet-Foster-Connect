@@ -115,3 +115,9 @@
         padding: 48px 32px 80px;
     }
 }
+
+@media (min-width: 1280px) {
+    .associations-list__inner {
+        max-width: 1200px;
+    }
+}
