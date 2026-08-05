@@ -72,6 +72,7 @@
     border-radius: 16px;
     padding: 20px;
     margin-bottom: 16px;
+    box-shadow: var(--shadow-sm);
 }
 
 .edit-profile__card-title {
