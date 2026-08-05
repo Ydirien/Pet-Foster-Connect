@@ -39,56 +39,58 @@ export function ResetPassword() {
 
     return (
         <section className="password-reset">
-            <div className="password-reset__icon password-reset__icon--sauge">
-                <Lock size={22} strokeWidth={1.8} />
-            </div>
+            <div className="password-reset__inner">
+                <div className="password-reset__icon password-reset__icon--sauge">
+                    <Lock size={22} strokeWidth={1.8} />
+                </div>
 
-            <h1 className="password-reset__title">Nouveau mot de passe</h1>
-            <p className="password-reset__subtitle">
-                Choisissez un nouveau mot de passe pour votre compte.
-            </p>
-
-            {!token ? (
-                <p className="password-reset__error password-reset__error--centered">
-                    Ce lien de réinitialisation est invalide ou a expiré.{" "}
-                    <Link to="/mot-de-passe-oublie">Demander un nouveau lien</Link>
+                <h1 className="password-reset__title">Nouveau mot de passe</h1>
+                <p className="password-reset__subtitle">
+                    Choisissez un nouveau mot de passe pour votre compte.
                 </p>
-            ) : (
-                <form className="password-reset__form" onSubmit={handleSubmit}>
-                    <label className="password-reset__label" htmlFor="password">Nouveau mot de passe</label>
-                    <input
-                        id="password"
-                        type="password"
-                        className="password-reset__input"
-                        value={password}
-                        onChange={(event) => setPassword(event.target.value)}
-                        autoComplete="new-password"
-                        minLength={12}
-                        required
-                    />
-                    <p className="password-reset__hint">
-                        12 caractères minimum, avec majuscule, minuscule et chiffre.
+
+                {!token ? (
+                    <p className="password-reset__error password-reset__error--centered">
+                        Ce lien de réinitialisation est invalide ou a expiré.{" "}
+                        <Link to="/mot-de-passe-oublie">Demander un nouveau lien</Link>
                     </p>
+                ) : (
+                    <form className="password-reset__form" onSubmit={handleSubmit}>
+                        <label className="password-reset__label" htmlFor="password">Nouveau mot de passe</label>
+                        <input
+                            id="password"
+                            type="password"
+                            className="password-reset__input"
+                            value={password}
+                            onChange={(event) => setPassword(event.target.value)}
+                            autoComplete="new-password"
+                            minLength={12}
+                            required
+                        />
+                        <p className="password-reset__hint">
+                            12 caractères minimum, avec majuscule, minuscule et chiffre.
+                        </p>
 
-                    <label className="password-reset__label" htmlFor="confirmPassword">Confirmer le mot de passe</label>
-                    <input
-                        id="confirmPassword"
-                        type="password"
-                        className="password-reset__input"
-                        value={confirmPassword}
-                        onChange={(event) => setConfirmPassword(event.target.value)}
-                        autoComplete="new-password"
-                        minLength={12}
-                        required
-                    />
+                        <label className="password-reset__label" htmlFor="confirmPassword">Confirmer le mot de passe</label>
+                        <input
+                            id="confirmPassword"
+                            type="password"
+                            className="password-reset__input"
+                            value={confirmPassword}
+                            onChange={(event) => setConfirmPassword(event.target.value)}
+                            autoComplete="new-password"
+                            minLength={12}
+                            required
+                        />
 
-                    {error && <p className="password-reset__error">{error}</p>}
+                        {error && <p className="password-reset__error">{error}</p>}
 
-                    <button type="submit" className="password-reset__submit" disabled={isSubmitting}>
-                        {isSubmitting ? "Réinitialisation..." : "Réinitialiser le mot de passe"}
-                    </button>
-                </form>
-            )}
+                        <button type="submit" className="password-reset__submit" disabled={isSubmitting}>
+                            {isSubmitting ? "Réinitialisation..." : "Réinitialiser le mot de passe"}
+                        </button>
+                    </form>
+                )}
+            </div>
         </section>
     );
 }
