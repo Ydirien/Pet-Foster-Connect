@@ -61,12 +61,24 @@ export async function getAssociationDetail(req: Request, res: Response) {
     });
     if (!association) throw new NotFoundError("Association introuvable");
 
+    // Chaque animal du front attend un champ "association" (userId, slug, name,
+    // imageUrl, city) : ici tous les animaux appartiennent à cette même
+    // association déjà chargée, pas besoin de la refaire venir via Prisma.
+    const associationSummary = {
+        userId: association.userId,
+        slug: buildSlug(association.userId, association.name),
+        name: association.name,
+        imageUrl: association.imageUrl,
+        city: association.city,
+    };
+
     res.json({
         ...association,
-        slug: buildSlug(association.userId, association.name),
+        slug: associationSummary.slug,
         animals: association.animals.map((animal) => ({
             ...animal,
             slug: buildSlug(animal.id, animal.name),
+            association: associationSummary,
         })),
     });
 }

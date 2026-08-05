@@ -4,6 +4,7 @@ import { describe, it } from "node:test";
 import argon2 from "argon2";
 import { prisma } from "../models/index.ts";
 import { anonymousRequester, buildAuthedRequester } from "../../tests/index.ts";
+import { buildSlug } from "../lib/slug.ts";
 
 let counter = 0;
 
@@ -28,6 +29,48 @@ async function createFosterUser() {
         },
     });
 }
+
+async function createSpecies() {
+    counter++;
+    return prisma.species.create({ data: { name: `Espece ${counter}` } });
+}
+
+async function createAnimal(associationId: number, speciesId: number, overrides: Record<string, unknown> = {}) {
+    counter++;
+    return prisma.animal.create({
+        data: {
+            name: `Animal ${counter}`,
+            gender: "male",
+            associationId,
+            speciesId,
+            status: "available",
+            ...overrides,
+        },
+    });
+}
+
+// ---------------------------------------------------------------------------
+// GET /api/associations/:slug
+// ---------------------------------------------------------------------------
+
+describe("[GET] /api/associations/:slug", () => {
+    it("should include a usable association object on each listed animal", async () => {
+        const associationUser = await createAssociationUser();
+        const associationProfile = await prisma.association.findUniqueOrThrow({
+            where: { userId: associationUser.id },
+        });
+        const species = await createSpecies();
+        await createAnimal(associationUser.id, species.id, { name: "Rex" });
+
+        const slug = buildSlug(associationUser.id, associationProfile.name);
+        const { data, status } = await anonymousRequester.get(`/associations/${slug}`);
+
+        assert.strictEqual(status, 200);
+        assert.strictEqual(data.animals.length, 1);
+        assert.strictEqual(data.animals[0].association.name, associationProfile.name);
+        assert.ok(data.animals[0].association.slug);
+    });
+});
 
 // ---------------------------------------------------------------------------
 // PUT /api/associations/:id
