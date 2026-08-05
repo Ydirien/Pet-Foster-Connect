@@ -56,11 +56,14 @@
     padding: 20px;
     text-decoration: none;
     color: inherit;
-    transition: border-color 0.15s ease;
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.15s ease, box-shadow 0.18s ease, transform 0.18s ease;
 }
 
 .association-card:hover {
     border-color: var(--terracotta);
+    box-shadow: var(--shadow-lift);
+    transform: translateY(-2px);
 }
 
 .association-card__icon {
