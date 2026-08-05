@@ -1,0 +1,218 @@
+.edit-profile__state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+}
+
+.edit-profile {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+    background: var(--creme);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-profile__title {
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--anthracite);
+    margin: 0 0 24px;
+}
+
+.edit-profile__avatar-picker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 88px;
+    height: 88px;
+    margin: 0 auto 4px;
+    border: 2px dashed var(--line);
+    border-radius: 50%;
+    background-color: white;
+    background-size: cover;
+    background-position: center;
+    color: var(--muted);
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.edit-profile__avatar-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.edit-profile__avatar-change {
+    display: block;
+    text-align: center;
+    margin: 0 0 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--terracotta);
+    cursor: pointer;
+}
+
+.edit-profile__card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+.edit-profile__card-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 16px;
+}
+
+.edit-profile__readonly {
+    font-size: 12px;
+    color: var(--muted);
+    margin: 0 0 12px;
+}
+
+.edit-profile__row {
+    display: flex;
+    gap: 12px;
+}
+
+.edit-profile__row .edit-profile__field {
+    flex: 1;
+    min-width: 0;
+}
+
+.edit-profile__label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--anthracite);
+    margin-bottom: 6px;
+    display: block;
+}
+
+.edit-profile__input,
+.edit-profile__textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: white;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--anthracite);
+}
+
+.edit-profile__textarea {
+    min-height: 80px;
+}
+
+.edit-profile__checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--anthracite);
+    margin-bottom: 16px;
+    cursor: pointer;
+}
+
+.edit-profile__pets {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.edit-profile__pet {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    background: var(--creme);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 13px;
+    color: var(--anthracite);
+}
+
+.edit-profile__pet button {
+    border: none;
+    background: none;
+    color: #B3261E;
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.edit-profile__add-pet {
+    display: grid;
+    grid-template-columns: 1fr 90px;
+    gap: 8px;
+}
+
+.edit-profile__add-pet .edit-profile__input {
+    margin-bottom: 8px;
+}
+
+.edit-profile__checkbox {
+    grid-column: 1 / -1;
+}
+
+.edit-profile__add-btn {
+    grid-column: 1 / -1;
+    padding: 10px;
+    border: none;
+    border-radius: 999px;
+    background: var(--sauge);
+    color: white;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.edit-profile__error {
+    color: #B3261E;
+    font-size: 13px;
+    margin: 0 0 16px;
+}
+
+.edit-profile__submit {
+    padding: 16px;
+    border: none;
+    border-radius: 999px;
+    background: var(--terracotta);
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.edit-profile__submit:hover {
+    background: var(--terracotta-dark);
+}
+
+.edit-profile__submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+@media (min-width: 768px) {
+    .edit-profile {
+        max-width: 640px;
+        padding: 48px 32px 80px;
+    }
+}
