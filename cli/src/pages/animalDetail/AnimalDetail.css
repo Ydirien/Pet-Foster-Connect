@@ -1,0 +1,256 @@
+.animal-detail-page {
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+    Hero (photo de l'animal)
+    Nommé "animal-hero" (pas juste ".hero") : ce nom de classe est aussi
+    utilisé par Home.css pour le hero de la page d'accueil. Le CSS n'étant
+    pas scopé par composant (imports classiques, pas de CSS Modules), un nom
+    générique partagé entre deux fichiers fusionne ses règles partout où la
+    classe apparaît (bug constaté : padding/flex de Home.css qui fuitaient ici).
+   ========================================================================== */
+.animal-hero {
+    position: relative;
+    margin: 16px;
+    margin-bottom: 0;
+}
+
+.animal-card__image,
+.animal-card__image--placeholder {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 20px 20px 0 0;
+    background: var(--creme);
+}
+
+/* Bouton "changer la photo" en surimpression, bas-gauche du hero */
+.animal-hero__refresh {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: none;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* ==========================================================================
+    Carte détail animal (fond sauge foncé)
+   ========================================================================== */
+.animal-detail {
+    margin: 0 16px;
+    background: var(--sauge-dark);
+    border-radius: 0 0 20px 20px;
+    padding: 20px;
+    color: white;
+}
+
+.animal-detail h1 {
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    margin: 0 0 2px;
+    color: white;
+}
+
+.animal-detail h2 {
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0 0 16px;
+}
+
+.card-detail {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.birth-date,
+.gender,
+.state {
+    background: var(--creme);
+    border-radius: 12px;
+    padding: 10px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: var(--sauge-dark);
+}
+
+.birth-date p:first-of-type,
+.gender p:first-of-type,
+.state p:first-of-type {
+    font-size: 9px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.birth-date p:last-of-type,
+.gender p:last-of-type,
+.state p:last-of-type {
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--anthracite);
+    margin: 0;
+}
+
+.description h3,
+.incompatible h3 {
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+    margin: 0 0 8px;
+    color: white;
+}
+
+.description p {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.92);
+    margin: 0 0 18px;
+}
+
+.incompatible {
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.incompatible-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.incompatible-tag {
+    display: inline-block;
+    background: white;
+    color: var(--anthracite);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 20px;
+}
+
+/* ==========================================================================
+    Bouton "Offrir un foyer"
+   ========================================================================== */
+.btn {
+    display: block;
+    width: calc(100% - 32px);
+    margin: 16px 16px;
+    padding: 15px;
+    border: none;
+    border-radius: 999px;
+    background: var(--terracotta);
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: var(--terracotta-dark);
+}
+
+.btn--disabled {
+    text-align: center;
+    background: var(--line);
+    color: var(--muted);
+    cursor: default;
+}
+
+.foster-request {
+    margin: 16px 16px 0;
+}
+
+.foster-request__message {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 80px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.foster-request__error {
+    color: #B3261E;
+    font-size: 13px;
+    margin: 0 0 12px;
+}
+
+/* ==========================================================================
+    Carte association
+   ========================================================================== */
+.association-detail {
+    /* Marge haute explicite : la section précédente (CTA "Offrir un foyer")
+       peut être vide (ex: vue association), on ne peut pas compter sur ses
+       propres marges pour créer l'espacement avec .animal-detail. */
+    margin: 16px 16px;
+    background: var(--terracotta);
+    border-radius: 20px;
+    padding: 24px 20px;
+    text-align: center;
+    color: white;
+}
+
+.association-detail__avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid white;
+    margin: 0 auto 12px;
+    object-fit: cover;
+}
+
+.association-detail__avatar--placeholder {
+    background: var(--sauge);
+}
+
+.association-detail h2 {
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    margin: 0 0 6px;
+}
+
+.association-detail p {
+    font-size: 12.5px;
+    line-height: 1.5;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.association-btn {
+    margin-top: 16px;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 999px;
+    background: var(--sauge-dark);
+    color: white;
+    font-weight: 600;
+    font-size: 13.5px;
+    cursor: pointer;
+}
+
+.association-btn:hover {
+    background: #2f4433;
+}
