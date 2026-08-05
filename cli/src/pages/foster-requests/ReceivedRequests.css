@@ -72,6 +72,7 @@
     border: 1px solid var(--line);
     border-radius: 16px;
     padding: 18px;
+    box-shadow: var(--shadow-sm);
 }
 
 .request-card__header {
