@@ -38,3 +38,9 @@
         gap: 32px;
     }
 }
+
+@media (min-width: 1024px) {
+    .footer {
+        padding: 64px 32px 40px;
+    }
+}
