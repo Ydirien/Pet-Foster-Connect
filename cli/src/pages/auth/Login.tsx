@@ -39,49 +39,51 @@ export function Login() {
 
     return (
         <section className="login">
-            <h1 className="login__title">Bon retour parmi nous</h1>
-            <p className="login__subtitle">
-                Connectez-vous pour retrouver vos animaux à accueillir et suivre vos demandes.
-            </p>
+            <div className="login__inner">
+                <h1 className="login__title">Bon retour parmi nous</h1>
+                <p className="login__subtitle">
+                    Connectez-vous pour retrouver vos animaux à accueillir et suivre vos demandes.
+                </p>
 
-            {infoMessage && <p className="login__success">{infoMessage}</p>}
+                {infoMessage && <p className="login__success">{infoMessage}</p>}
 
-            <form className="login__form" onSubmit={handleSubmit}>
-                <label className="login__label" htmlFor="email">Email</label>
-                <input
-                    id="email"
-                    type="email"
-                    className="login__input"
-                    placeholder="camille.dubois@email.com"
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                    autoComplete="email"
-                    required
-                />
+                <form className="login__form" onSubmit={handleSubmit}>
+                    <label className="login__label" htmlFor="email">Email</label>
+                    <input
+                        id="email"
+                        type="email"
+                        className="login__input"
+                        placeholder="camille.dubois@email.com"
+                        value={email}
+                        onChange={(event) => setEmail(event.target.value)}
+                        autoComplete="email"
+                        required
+                    />
 
-                <label className="login__label" htmlFor="password">Mot de passe</label>
-                <input
-                    id="password"
-                    type="password"
-                    className="login__input"
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                    autoComplete="current-password"
-                    required
-                />
+                    <label className="login__label" htmlFor="password">Mot de passe</label>
+                    <input
+                        id="password"
+                        type="password"
+                        className="login__input"
+                        value={password}
+                        onChange={(event) => setPassword(event.target.value)}
+                        autoComplete="current-password"
+                        required
+                    />
 
-                <Link to="/mot-de-passe-oublie" className="login__forgot">Mot de passe oublié ?</Link>
+                    <Link to="/mot-de-passe-oublie" className="login__forgot">Mot de passe oublié ?</Link>
 
-                {error && <p className="login__error">{error}</p>}
+                    {error && <p className="login__error">{error}</p>}
 
-                <button type="submit" className="login__submit" disabled={isSubmitting}>
-                    {isSubmitting ? "Connexion..." : "Se connecter"}
-                </button>
-            </form>
+                    <button type="submit" className="login__submit" disabled={isSubmitting}>
+                        {isSubmitting ? "Connexion..." : "Se connecter"}
+                    </button>
+                </form>
 
-            <p className="login__signup">
-                Pas encore de compte ? <Link to="/inscription">S'inscrire</Link>
-            </p>
+                <p className="login__signup">
+                    Pas encore de compte ? <Link to="/inscription">S'inscrire</Link>
+                </p>
+            </div>
         </section>
     );
 }
