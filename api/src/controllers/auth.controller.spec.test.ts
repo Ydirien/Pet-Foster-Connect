@@ -189,6 +189,22 @@ describe("[POST] /api/auth/login", () => {
         assert.ok(setCookie.some((c: string) => c.startsWith("accessToken=")));
     });
 
+    it("should return the authenticated user (id, email, role)", async () => {
+        const user = await createFosterUser("MotDePasse123");
+
+        const response = await anonymousRequester.post("/auth/login", {
+            email: user.email,
+            password: "MotDePasse123",
+        });
+
+        assert.strictEqual(response.status, 200);
+        assert.deepStrictEqual(response.data.user, {
+            id: user.id,
+            email: user.email,
+            role: "foster",
+        });
+    });
+
     it("should return a refresh token and store it in the database", async () => {
         const user = await createFosterUser("MotDePasse123");
 

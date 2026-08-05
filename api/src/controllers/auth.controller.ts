@@ -149,7 +149,11 @@ export async function loginUser(req: Request, res: Response) {
     setAccessTokenCookie(res, accessToken);
     setRefreshTokenCookie(res, refreshToken);
 
-    res.json({ accessToken, refreshToken });
+    res.json({
+        accessToken,
+        refreshToken,
+        user: { id: user.id, email: user.email, role },
+    });
 }
 
 export async function logoutUser(req: Request, res: Response) {
