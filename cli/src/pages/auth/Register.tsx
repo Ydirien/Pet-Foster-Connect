@@ -64,155 +64,157 @@ export function Register() {
 
     return (
         <section className="register">
-            <h1 className="register__title">Créer mon compte</h1>
-            <p className="register__subtitle">
-                Rejoignez la communauté Pet Foster Connect et donnez un foyer temporaire à un animal qui en a besoin.
-            </p>
+            <div className="register__inner">
+                <h1 className="register__title">Créer mon compte</h1>
+                <p className="register__subtitle">
+                    Rejoignez la communauté Pet Foster Connect et donnez un foyer temporaire à un animal qui en a besoin.
+                </p>
 
-            <div className="register__role-toggle">
-                <button
-                    type="button"
-                    className={`register__role-btn${role === "foster" ? " register__role-btn--active" : ""}`}
-                    onClick={() => setRole("foster")}
-                >
-                    Je suis famille d'accueil
-                </button>
-                <button
-                    type="button"
-                    className={`register__role-btn${role === "association" ? " register__role-btn--active" : ""}`}
-                    onClick={() => setRole("association")}
-                >
-                    Je suis une association
-                </button>
-            </div>
-
-            <form className="register__form" onSubmit={handleSubmit}>
-                {role === "foster" ? (
-                    <div className="register__row">
-                        <div className="register__field">
-                            <label className="register__label" htmlFor="firstName">Prénom</label>
-                            <input
-                                id="firstName"
-                                className="register__input"
-                                placeholder="Camille"
-                                value={firstName}
-                                onChange={(event) => setFirstName(event.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="register__field">
-                            <label className="register__label" htmlFor="lastName">Nom</label>
-                            <input
-                                id="lastName"
-                                className="register__input"
-                                placeholder="Dubois"
-                                value={lastName}
-                                onChange={(event) => setLastName(event.target.value)}
-                                required
-                            />
-                        </div>
-                    </div>
-                ) : (
-                    <>
-                        <label className="register__label" htmlFor="name">Nom de l'association</label>
-                        <input
-                            id="name"
-                            className="register__input"
-                            placeholder="Les Amis des Bêtes"
-                            value={name}
-                            onChange={(event) => setName(event.target.value)}
-                            required
-                        />
-
-                        <label className="register__label" htmlFor="siret">SIRET (facultatif)</label>
-                        <input
-                            id="siret"
-                            className="register__input"
-                            placeholder="12345678901234"
-                            value={siret}
-                            onChange={(event) => setSiret(event.target.value)}
-                            inputMode="numeric"
-                            maxLength={14}
-                        />
-                    </>
-                )}
-
-                <label className="register__label" htmlFor="email">Email</label>
-                <input
-                    id="email"
-                    type="email"
-                    className="register__input"
-                    placeholder="camille.dubois@email.com"
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                    autoComplete="email"
-                    required
-                />
-
-                <label className="register__label" htmlFor="password">Mot de passe</label>
-                <input
-                    id="password"
-                    type="password"
-                    className="register__input"
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                    autoComplete="new-password"
-                    minLength={12}
-                    required
-                />
-                <p className="register__hint">12 caractères minimum, avec majuscule, minuscule et chiffre.</p>
-
-                <label className="register__label" htmlFor="confirmPassword">Confirmer le mot de passe</label>
-                <input
-                    id="confirmPassword"
-                    type="password"
-                    className="register__input"
-                    value={confirmPassword}
-                    onChange={(event) => setConfirmPassword(event.target.value)}
-                    autoComplete="new-password"
-                    minLength={12}
-                    required
-                />
-
-                <div className="register__row">
-                    <div className="register__field">
-                        <label className="register__label" htmlFor="city">Ville</label>
-                        <input
-                            id="city"
-                            className="register__input"
-                            placeholder="Lyon"
-                            value={city}
-                            onChange={(event) => setCity(event.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="register__field">
-                        <label className="register__label" htmlFor="postalCode">Code postal</label>
-                        <input
-                            id="postalCode"
-                            className="register__input"
-                            placeholder="69000"
-                            value={postalCode}
-                            onChange={(event) => setPostalCode(event.target.value)}
-                        />
-                    </div>
+                <div className="register__role-toggle">
+                    <button
+                        type="button"
+                        className={`register__role-btn${role === "foster" ? " register__role-btn--active" : ""}`}
+                        onClick={() => setRole("foster")}
+                    >
+                        Je suis famille d'accueil
+                    </button>
+                    <button
+                        type="button"
+                        className={`register__role-btn${role === "association" ? " register__role-btn--active" : ""}`}
+                        onClick={() => setRole("association")}
+                    >
+                        Je suis une association
+                    </button>
                 </div>
 
-                {error && <p className="register__error">{error}</p>}
+                <form className="register__form" onSubmit={handleSubmit}>
+                    {role === "foster" ? (
+                        <div className="register__row">
+                            <div className="register__field">
+                                <label className="register__label" htmlFor="firstName">Prénom</label>
+                                <input
+                                    id="firstName"
+                                    className="register__input"
+                                    placeholder="Camille"
+                                    value={firstName}
+                                    onChange={(event) => setFirstName(event.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="register__field">
+                                <label className="register__label" htmlFor="lastName">Nom</label>
+                                <input
+                                    id="lastName"
+                                    className="register__input"
+                                    placeholder="Dubois"
+                                    value={lastName}
+                                    onChange={(event) => setLastName(event.target.value)}
+                                    required
+                                />
+                            </div>
+                        </div>
+                    ) : (
+                        <>
+                            <label className="register__label" htmlFor="name">Nom de l'association</label>
+                            <input
+                                id="name"
+                                className="register__input"
+                                placeholder="Les Amis des Bêtes"
+                                value={name}
+                                onChange={(event) => setName(event.target.value)}
+                                required
+                            />
 
-                <button type="submit" className="register__submit" disabled={isSubmitting}>
-                    {isSubmitting ? "Création..." : "Créer mon compte"}
-                </button>
-            </form>
+                            <label className="register__label" htmlFor="siret">SIRET (facultatif)</label>
+                            <input
+                                id="siret"
+                                className="register__input"
+                                placeholder="12345678901234"
+                                value={siret}
+                                onChange={(event) => setSiret(event.target.value)}
+                                inputMode="numeric"
+                                maxLength={14}
+                            />
+                        </>
+                    )}
 
-            <p className="register__login">
-                Déjà inscrit ? <Link to="/connexion">Se connecter</Link>
-            </p>
+                    <label className="register__label" htmlFor="email">Email</label>
+                    <input
+                        id="email"
+                        type="email"
+                        className="register__input"
+                        placeholder="camille.dubois@email.com"
+                        value={email}
+                        onChange={(event) => setEmail(event.target.value)}
+                        autoComplete="email"
+                        required
+                    />
 
-            <p className="register__legal">
-                En créant un compte, vous acceptez nos{" "}
-                <Link to="/mentions-legales">mentions légales</Link>.
-            </p>
+                    <label className="register__label" htmlFor="password">Mot de passe</label>
+                    <input
+                        id="password"
+                        type="password"
+                        className="register__input"
+                        value={password}
+                        onChange={(event) => setPassword(event.target.value)}
+                        autoComplete="new-password"
+                        minLength={12}
+                        required
+                    />
+                    <p className="register__hint">12 caractères minimum, avec majuscule, minuscule et chiffre.</p>
+
+                    <label className="register__label" htmlFor="confirmPassword">Confirmer le mot de passe</label>
+                    <input
+                        id="confirmPassword"
+                        type="password"
+                        className="register__input"
+                        value={confirmPassword}
+                        onChange={(event) => setConfirmPassword(event.target.value)}
+                        autoComplete="new-password"
+                        minLength={12}
+                        required
+                    />
+
+                    <div className="register__row">
+                        <div className="register__field">
+                            <label className="register__label" htmlFor="city">Ville</label>
+                            <input
+                                id="city"
+                                className="register__input"
+                                placeholder="Lyon"
+                                value={city}
+                                onChange={(event) => setCity(event.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="register__field">
+                            <label className="register__label" htmlFor="postalCode">Code postal</label>
+                            <input
+                                id="postalCode"
+                                className="register__input"
+                                placeholder="69000"
+                                value={postalCode}
+                                onChange={(event) => setPostalCode(event.target.value)}
+                            />
+                        </div>
+                    </div>
+
+                    {error && <p className="register__error">{error}</p>}
+
+                    <button type="submit" className="register__submit" disabled={isSubmitting}>
+                        {isSubmitting ? "Création..." : "Créer mon compte"}
+                    </button>
+                </form>
+
+                <p className="register__login">
+                    Déjà inscrit ? <Link to="/connexion">Se connecter</Link>
+                </p>
+
+                <p className="register__legal">
+                    En créant un compte, vous acceptez nos{" "}
+                    <Link to="/mentions-legales">mentions légales</Link>.
+                </p>
+            </div>
         </section>
     );
 }

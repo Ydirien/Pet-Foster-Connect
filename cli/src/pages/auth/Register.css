@@ -1,8 +1,13 @@
 .register {
+    flex: 1;
+    width: 100%;
+    background: var(--creme);
+}
+
+.register__inner {
     max-width: 420px;
     margin: 0 auto;
     padding: 32px 20px 60px;
-    background: var(--creme);
     text-align: left;
 }
 
@@ -148,7 +153,7 @@
 }
 
 @media (min-width: 768px) {
-    .register {
+    .register__inner {
         max-width: 560px;
         padding: 64px 20px 100px;
     }
