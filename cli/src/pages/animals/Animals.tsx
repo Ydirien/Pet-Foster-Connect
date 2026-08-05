@@ -74,7 +74,7 @@ export function Animals() {
         (neutered ? 1 : 0);
 
     return (
-        <>
+        <div className="animals-layout">
             <section className="filter-bar">
                 <button
                     type="button"
@@ -85,95 +85,95 @@ export function Animals() {
                     <SlidersHorizontal size={16} strokeWidth={1.8} />
                 </button>
 
-                {isFilterPanelOpen && (
-                    <div className="filter-panel">
-                        <CityRadiusFilter value={cityRadius} onChange={setCityRadius} idPrefix="animals-filter" />
+                <div className={`filter-panel${isFilterPanelOpen ? " filter-panel--open" : ""}`}>
+                    <CityRadiusFilter value={cityRadius} onChange={setCityRadius} idPrefix="animals-filter" />
 
-                        <div className="filter-panel__field">
-                            <label htmlFor="filter-breed">Race</label>
-                            <input
-                                id="filter-breed"
-                                type="text"
-                                placeholder="Ex : Labrador"
-                                value={breed}
-                                onChange={(event) => setBreed(event.target.value)}
-                            />
-                        </div>
+                    <div className="filter-panel__field">
+                        <label htmlFor="filter-breed">Race</label>
+                        <input
+                            id="filter-breed"
+                            type="text"
+                            placeholder="Ex : Labrador"
+                            value={breed}
+                            onChange={(event) => setBreed(event.target.value)}
+                        />
+                    </div>
 
-                        <div className="filter-panel__field">
-                            <label htmlFor="filter-age">Âge</label>
-                            <select
-                                id="filter-age"
-                                value={ageCategory}
-                                onChange={(event) => setAgeCategory(event.target.value as AgeCategory | "")}
-                            >
-                                <option value="">Tous</option>
-                                {AGE_OPTIONS.map((option) => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
+                    <div className="filter-panel__field">
+                        <label htmlFor="filter-age">Âge</label>
+                        <select
+                            id="filter-age"
+                            value={ageCategory}
+                            onChange={(event) => setAgeCategory(event.target.value as AgeCategory | "")}
+                        >
+                            <option value="">Tous</option>
+                            {AGE_OPTIONS.map((option) => (
+                                <option key={option.value} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
 
-                        <div className="filter-panel__field">
-                            <label htmlFor="filter-gender">Sexe</label>
-                            <select
-                                id="filter-gender"
-                                value={gender}
-                                onChange={(event) => setGender(event.target.value as Gender | "")}
-                            >
-                                <option value="">Indifférent</option>
-                                <option value="male">Mâle</option>
-                                <option value="female">Femelle</option>
-                            </select>
-                        </div>
+                    <div className="filter-panel__field">
+                        <label htmlFor="filter-gender">Sexe</label>
+                        <select
+                            id="filter-gender"
+                            value={gender}
+                            onChange={(event) => setGender(event.target.value as Gender | "")}
+                        >
+                            <option value="">Indifférent</option>
+                            <option value="male">Mâle</option>
+                            <option value="female">Femelle</option>
+                        </select>
+                    </div>
 
-                        <div className="filter-panel__field">
-                            <label htmlFor="filter-neutered">Stérilisé</label>
-                            <select
-                                id="filter-neutered"
-                                value={neutered}
-                                onChange={(event) => setNeutered(event.target.value as "" | "true" | "false")}
-                            >
-                                <option value="">Indifférent</option>
-                                <option value="true">Oui</option>
-                                <option value="false">Non</option>
-                            </select>
-                        </div>
+                    <div className="filter-panel__field">
+                        <label htmlFor="filter-neutered">Stérilisé</label>
+                        <select
+                            id="filter-neutered"
+                            value={neutered}
+                            onChange={(event) => setNeutered(event.target.value as "" | "true" | "false")}
+                        >
+                            <option value="">Indifférent</option>
+                            <option value="true">Oui</option>
+                            <option value="false">Non</option>
+                        </select>
+                    </div>
 
-                        {activeFilterCount > 0 && (
-                            <button type="button" className="filter-panel__reset" onClick={resetFilters}>
-                                Réinitialiser les filtres
-                            </button>
-                        )}
+                    {activeFilterCount > 0 && (
+                        <button type="button" className="filter-panel__reset" onClick={resetFilters}>
+                            Réinitialiser les filtres
+                        </button>
+                    )}
+                </div>
+            </section>
+
+            <div className="animals-content">
+                <section className="animals-grid">
+                    {isLoading ? (
+                        <p>Chargement...</p>
+                    ) : animals.length === 0 ? (
+                        <p>Aucun animal ne correspond à votre recherche.</p>
+                    ) : (
+                        animals
+                            .slice(0, visibleCount)
+                            .map((animal) => <AnimalCard key={animal.id} animal={animal} />)
+                    )}
+                </section>
+
+                {!isLoading && visibleCount < animals.length && (
+                    <div className="animals-load-more">
+                        <button
+                            type="button"
+                            className="animals-load-more__button"
+                            onClick={() => setVisibleCount((count) => count + PAGE_SIZE)}
+                        >
+                            Voir plus
+                        </button>
                     </div>
                 )}
-            </section>
-
-            <section className="animals-grid">
-                {isLoading ? (
-                    <p>Chargement...</p>
-                ) : animals.length === 0 ? (
-                    <p>Aucun animal ne correspond à votre recherche.</p>
-                ) : (
-                    animals
-                        .slice(0, visibleCount)
-                        .map((animal) => <AnimalCard key={animal.id} animal={animal} />)
-                )}
-            </section>
-
-            {!isLoading && visibleCount < animals.length && (
-                <div className="animals-load-more">
-                    <button
-                        type="button"
-                        className="animals-load-more__button"
-                        onClick={() => setVisibleCount((count) => count + PAGE_SIZE)}
-                    >
-                        Voir plus
-                    </button>
-                </div>
-            )}
-        </>
+            </div>
+        </div>
     );
 }
