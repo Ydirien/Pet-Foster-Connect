@@ -1,0 +1,125 @@
+.header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--terracotta);
+    padding: 16px 20px;
+}
+
+.header__burger {
+    order: 0;
+}
+
+.header__logo-link {
+    order: 1;
+}
+
+.header__nav {
+    order: 2;
+}
+
+.header__profile {
+    order: 3;
+}
+
+.header__logo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    height: 56px;
+}
+
+.header__burger,
+.header__profile {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: white;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.burger-line {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: white;
+    margin: 4px 0;
+    border-radius: 2px;
+}
+
+.header__nav {
+    display: none;
+}
+
+.header__nav--open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+    z-index: 10;
+}
+
+.header__nav-link {
+    padding: 14px 20px;
+    color: var(--anthracite);
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+}
+
+.header__nav-link:last-child {
+    border-bottom: none;
+}
+
+.header__nav-link:hover {
+    background: var(--creme);
+}
+
+@media (min-width: 768px) {
+    .header {
+        padding: 14px 32px;
+    }
+
+    .header__burger {
+        display: none;
+    }
+
+    .header__logo {
+        position: static;
+        transform: none;
+        height: 68px;
+    }
+
+    .header__nav,
+    .header__nav--open {
+        display: flex;
+        flex-direction: row;
+        position: static;
+        background: none;
+        box-shadow: none;
+        gap: 4px;
+    }
+
+    .header__nav-link {
+        color: white;
+        border-bottom: none;
+        padding: 8px 14px;
+        border-radius: 999px;
+    }
+
+    .header__nav-link:hover {
+        background: rgba(255, 255, 255, 0.18);
+    }
+}

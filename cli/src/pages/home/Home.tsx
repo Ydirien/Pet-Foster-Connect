@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getSpecies } from "../../services/animalServices";
+import { getSpecies } from "../../services/animalService";
 import type { Species } from "../../types/Animal";
 import heroImage from "../../assets/home/Hero.jpg";
 import card1Image from "../../assets/home/card_1.jpg";

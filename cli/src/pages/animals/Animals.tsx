@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { SlidersHorizontal } from "lucide-react";
-import { listAnimals } from "../../services/animalServices";
+import { listAnimals } from "../../services/animalService";
 import type { Animal, AgeCategory, Gender } from "../../types/Animal";
 import { AnimalCard } from "../../components/common/AnimalCard/AnimalCard";
 import { CityRadiusFilter, type CityRadiusValue } from "../../components/common/CityRadiusFilter/CityRadiusFilter";

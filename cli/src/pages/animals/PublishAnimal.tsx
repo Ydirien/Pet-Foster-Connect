@@ -8,7 +8,7 @@ import {
     getSpecies,
     updateAnimal,
     uploadAnimalImage,
-} from "../../services/animalServices";
+} from "../../services/animalService";
 import type { Gender, Species } from "../../types/Animal";
 import "./PublishAnimal.css";
 

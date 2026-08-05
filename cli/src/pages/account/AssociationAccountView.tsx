@@ -5,7 +5,7 @@ import type { CurrentAssociationUser } from "../../types/Auth";
 import type { Animal, AnimalStatus } from "../../types/Animal";
 import type { FosterRequest } from "../../types/FosterRequest";
 import { listFosterRequests } from "../../services/fosterRequestService";
-import { listAnimals } from "../../services/animalServices";
+import { listAnimals } from "../../services/animalService";
 import { RequestStatusBadge } from "../../components/common/RequestStatusBadge/RequestStatusBadge";
 import { AccountActions } from "./AccountActions";
 import "./Account.css";

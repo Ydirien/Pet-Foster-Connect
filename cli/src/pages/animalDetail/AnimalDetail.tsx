@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Calendar, Shield, VenusAndMars } from "lucide-react";
 import type { AnimalDetail as AnimalDetailData } from "../../types/Animal";
-import { getAnimalBySlug } from "../../services/animalServices";
+import { getAnimalBySlug } from "../../services/animalService";
 import { createFosterRequest } from "../../services/fosterRequestService";
 import { useAuth } from "../../context/AuthContext";
 import './AnimalDetail.css';
