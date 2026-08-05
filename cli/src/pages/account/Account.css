@@ -1,0 +1,241 @@
+.account {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+    background: var(--creme);
+    text-align: left;
+}
+
+.account__state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+}
+
+.account__header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.account__avatar {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.account__avatar--placeholder {
+    background: linear-gradient(to bottom, #BFE0F0 0%, #BFE0F0 55%, #8FBF6F 55%, #6FA352 100%);
+}
+
+.account__badge {
+    display: inline-block;
+    background: var(--sauge);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-bottom: 6px;
+}
+
+.account__name {
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-size: 19px;
+    color: var(--anthracite);
+    margin: 0;
+}
+
+.account__since {
+    font-size: 12px;
+    color: var(--muted);
+    margin: 2px 0 0;
+}
+
+.account__card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+.account__card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.account__card-header .account__card-title {
+    margin: 0;
+}
+
+.account__card-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 16px;
+}
+
+.account__edit-link {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--terracotta);
+    text-decoration: none;
+}
+
+.account__edit-link:hover {
+    text-decoration: underline;
+}
+
+.account__info {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    color: var(--sauge-dark);
+    margin-top: 16px;
+}
+
+.account__info-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 2px;
+}
+
+.account__info-value {
+    font-size: 14px;
+    color: var(--anthracite);
+    margin: 0;
+}
+
+.account__stats {
+    display: flex;
+    gap: 12px;
+}
+
+.account__stat {
+    flex: 1;
+    text-align: center;
+}
+
+.account__stat-value {
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--anthracite);
+    margin: 0;
+}
+
+.account__stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    margin: 2px 0 0;
+}
+
+.account__requests {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.account__request-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.account__request-name {
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: var(--anthracite);
+    margin: 0;
+}
+
+.account__request-date {
+    font-size: 12px;
+    color: var(--muted);
+    margin: 2px 0 0;
+}
+
+.account__animals {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.account__animal {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.account__description {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 0;
+}
+
+.account__publish-btn {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px;
+    border-radius: 999px;
+    background: var(--terracotta);
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.account__publish-btn:hover {
+    background: var(--terracotta-dark);
+}
+
+.account__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.account__action {
+    padding: 14px;
+    border: none;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    background: #F9DDDA;
+    color: #B3261E;
+}
+
+.account__action:hover {
+    opacity: 0.9;
+}
+
+@media (min-width: 768px) {
+    .account {
+        max-width: 640px;
+        padding: 48px 32px 80px;
+    }
+
+    .account__actions {
+        flex-direction: row;
+    }
+}
