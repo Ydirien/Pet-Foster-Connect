@@ -18,4 +18,35 @@
     --body-size: 16px;
     --text-secondary-size: 14px;
     --caption-size: 12px;
+
+    /* Échelle d'espacement : utilisée par les nouveaux blocs de mise en
+       page desktop (pas de reprise rétroactive des paddings existants). */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-7: 32px;
+    --space-8: 40px;
+    --space-9: 48px;
+    --space-10: 64px;
+
+    /* Ombres teintées anthracite (pas de noir pur), pour donner un peu de
+       profondeur aux cartes actuellement plates (juste une bordure). */
+    --shadow-sm: 0 1px 3px rgba(43, 42, 40, 0.08), 0 1px 2px rgba(43, 42, 40, 0.05);
+    --shadow-md: 0 6px 16px rgba(43, 42, 40, 0.10), 0 2px 4px rgba(43, 42, 40, 0.06);
+    --shadow-lift: 0 10px 24px rgba(43, 42, 40, 0.16);
+}
+
+/* Le site utilisait la même échelle de titres qu'on soit sur mobile ou
+   sur un écran 1920px : à partir de 1024px, les titres (déjà pilotés
+   partout par ces variables) grossissent pour que le desktop se
+   distingue vraiment du mobile, sans toucher au corps de texte. */
+@media (min-width: 1024px) {
+    :root {
+        --h1-size: 40px;
+        --h2-size: 28px;
+        --h3-size: 20px;
+    }
 }
