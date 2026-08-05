@@ -51,6 +51,7 @@ export function AssociationAccountView({ account }: AssociationAccountViewProps)
 
     return (
         <section className="account">
+          <div className="account__inner">
             <div className="account__header">
                 {account.profile.imageUrl ? (
                     <img className="account__avatar" src={account.profile.imageUrl} alt="" />
@@ -177,6 +178,7 @@ export function AssociationAccountView({ account }: AssociationAccountViewProps)
             <Link to="/publier-un-animal" className="account__publish-btn">Publier un animal</Link>
 
             <AccountActions />
+          </div>
         </section>
     );
 }

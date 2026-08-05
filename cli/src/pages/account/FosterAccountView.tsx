@@ -32,6 +32,7 @@ export function FosterAccountView({ account }: FosterAccountViewProps) {
 
     return (
         <section className="account">
+          <div className="account__inner">
             <div className="account__header">
                 {account.profile.imageUrl ? (
                     <img className="account__avatar" src={account.profile.imageUrl} alt="" />
@@ -107,6 +108,7 @@ export function FosterAccountView({ account }: FosterAccountViewProps) {
             </div>
 
             <AccountActions />
+          </div>
         </section>
     );
 }
