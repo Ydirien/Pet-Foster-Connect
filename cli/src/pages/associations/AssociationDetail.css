@@ -123,3 +123,9 @@
         align-items: flex-start;
     }
 }
+
+@media (min-width: 1280px) {
+    .association-detail-page {
+        max-width: 1100px;
+    }
+}
