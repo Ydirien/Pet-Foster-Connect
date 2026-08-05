@@ -1,5 +1,20 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import argon2 from "argon2";
 import { prisma } from "../src/models/index.ts";
+import { config } from "../config.ts";
+import { saveOptimizedAnimalImage } from "../src/lib/image-processing.ts";
+
+// Images de démo : le dossier vit dans cli/, pas api/, car ce sont aussi les
+// visuels utilisés par le front (cartes de présentation, etc.) - on réutilise
+// les mêmes fichiers plutôt que d'en dupliquer une copie côté api.
+const DOGS_ASSETS_DIR = path.join(process.cwd(), "..", "cli", "src", "assets", "chiens");
+
+async function seedAnimalImage(filename: string): Promise<string> {
+    const buffer = await readFile(path.join(DOGS_ASSETS_DIR, filename));
+    const relativePath = await saveOptimizedAnimalImage(buffer);
+    return `http://localhost:${config.port}${relativePath}`;
+}
 
 // Référentiel des espèces (idempotent : upsert par nom unique).
 const SPECIES = [
@@ -74,6 +89,7 @@ const DOGS = [
         age: 3,
         behavior: "Joueur et protecteur, Rex a besoin d'une famille active avec un grand jardin.",
         specificNeeds: "Promenades quotidiennes d'au moins 1h.",
+        image: "chien_1.jpg",
     },
     {
         name: "Luna",
@@ -83,6 +99,7 @@ const DOGS = [
         age: 2,
         behavior: "Très douce et sociable, s'entend bien avec les enfants et les autres chiens.",
         specificNeeds: null,
+        image: "chien_2.jpg",
     },
     {
         name: "Max",
@@ -92,6 +109,7 @@ const DOGS = [
         age: 5,
         behavior: "Calme et affectueux, idéal pour une première adoption.",
         specificNeeds: "Alimentation spécifique (sensible digestif).",
+        image: "chien_3.jpg",
     },
     {
         name: "Bella",
@@ -101,6 +119,7 @@ const DOGS = [
         age: 1,
         behavior: "Très énergique, curieuse et têtue, a besoin d'une famille expérimentée.",
         specificNeeds: "Beaucoup d'exercice quotidien, ne supporte pas la solitude prolongée.",
+        image: "chien_4.jpg",
     },
     {
         name: "Fido",
@@ -111,6 +130,7 @@ const DOGS = [
         behavior: "Déjà en famille d'accueil depuis peu, ne cherche plus de candidat.",
         specificNeeds: null,
         status: "in_foster_care" as const,
+        image: "chien_5.jpg",
     },
 ];
 
@@ -137,6 +157,7 @@ for (const dog of DOGS) {
             status: dog.status ?? "available",
             speciesId: chien.id,
             associationId: associationUser.id,
+            imageUrl: await seedAnimalImage(dog.image),
         },
     });
     createdDogs.set(dog.name, created.id);

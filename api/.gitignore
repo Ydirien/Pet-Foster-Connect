@@ -1,3 +1,6 @@
+# Images uploadées/générées (uploads utilisateurs + seed local)
+/uploads
+
 # Logs
 logs
 *.log
