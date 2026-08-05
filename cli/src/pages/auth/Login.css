@@ -126,3 +126,9 @@
         padding: 64px 20px 100px;
     }
 }
+
+@media (min-width: 1024px) {
+    .login__inner {
+        max-width: 520px;
+    }
+}
