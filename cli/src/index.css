@@ -4,8 +4,22 @@
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+}
+
 body {
     font-family: "Inter", sans-serif;
     color: var(--anthracite);
     background: white;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+}
+
+.app-main {
+    flex: 1 0 auto;
 }
