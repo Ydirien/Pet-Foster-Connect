@@ -139,6 +139,7 @@ export function PublishAnimal() {
 
     return (
         <section className="publish-animal">
+          <div className="publish-animal__inner">
             <h1 className="publish-animal__title">{isEditing ? "Modifier l'animal" : "Publier un animal"}</h1>
             <p className="publish-animal__subtitle">
                 {isEditing
@@ -332,6 +333,7 @@ export function PublishAnimal() {
                     </button>
                 )}
             </form>
+          </div>
         </section>
     );
 }
