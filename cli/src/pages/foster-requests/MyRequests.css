@@ -1,8 +1,13 @@
 .my-requests {
+    flex: 1;
+    width: 100%;
+    background: var(--creme);
+}
+
+.my-requests__inner {
     max-width: 480px;
     margin: 0 auto;
     padding: 32px 20px 60px;
-    background: var(--creme);
     text-align: left;
 }
 
@@ -105,7 +110,7 @@
 }
 
 @media (min-width: 768px) {
-    .my-requests {
+    .my-requests__inner {
         max-width: 800px;
         padding: 48px 32px 80px;
     }
@@ -118,7 +123,7 @@
 }
 
 @media (min-width: 1280px) {
-    .my-requests {
+    .my-requests__inner {
         max-width: 1100px;
     }
 
