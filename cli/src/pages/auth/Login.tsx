@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { login } from "../../services/AuthService";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/useAuth";
 import "./Login.css";
 
 export function Login() {

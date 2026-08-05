@@ -93,7 +93,7 @@ export async function listAnimals(req: Request, res: Response) {
             : animals;
 
     const results = withinRadius.map((animal) => {
-        const { latitude, longitude, ...associationRest } = animal.association;
+        const { latitude: _latitude, longitude: _longitude, ...associationRest } = animal.association;
         return {
             ...animal,
             slug: buildSlug(animal.id, animal.name),

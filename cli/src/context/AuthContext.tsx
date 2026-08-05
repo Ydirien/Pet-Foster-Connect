@@ -1,15 +1,7 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import type { AuthUser } from "../types/Auth";
 import { logout as logoutRequest } from "../services/AuthService";
-
-interface AuthContextValue {
-    user: AuthUser | null;
-    isAuthenticated: boolean;
-    login: (token: string, user: AuthUser) => void;
-    logout: () => void;
-}
-
-const AuthContext = createContext<AuthContextValue | null>(null);
+import { AuthContext } from "./useAuth";
 
 function getStoredUser(): AuthUser | null {
     const raw = localStorage.getItem("authUser");
@@ -30,7 +22,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(nextUser);
     }
 
-    async function logout() { 
+    async function logout() {
         await logoutRequest();
         setUser(null);
     }
@@ -40,10 +32,4 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             {children}
         </AuthContext.Provider>
     );
-}
-
-export function useAuth(): AuthContextValue {
-    const ctx = useContext(AuthContext);
-    if (!ctx) throw new Error("useAuth must be used within an AuthProvider");
-    return ctx;
 }

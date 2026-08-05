@@ -4,7 +4,7 @@ import { Calendar, Shield, VenusAndMars } from "lucide-react";
 import type { AnimalDetail as AnimalDetailData } from "../../types/Animal";
 import { getAnimalBySlug } from "../../services/animalService";
 import { createFosterRequest } from "../../services/fosterRequestService";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/useAuth";
 import './AnimalDetail.css';
 
 export function AnimalDetail() {

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { User } from "lucide-react";
 import logo from "../../../assets/logos/Logo-3-EnergieAccueil.png";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuth } from "../../../context/useAuth";
 import "./Header.css";
 
 const NAV_LINKS = [

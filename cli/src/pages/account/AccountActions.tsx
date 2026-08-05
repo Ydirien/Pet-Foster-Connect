@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { deleteCurrentUser } from "../../services/userService";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/useAuth";
 
 export function AccountActions() {
     const navigate = useNavigate();
