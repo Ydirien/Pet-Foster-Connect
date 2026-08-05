@@ -1,0 +1,128 @@
+.my-requests {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+    background: var(--creme);
+    text-align: left;
+}
+
+.my-requests__state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+}
+
+.my-requests__title {
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--anthracite);
+    margin: 0 0 6px;
+}
+
+.my-requests__subtitle {
+    font-size: 15px;
+    color: var(--muted);
+    margin: 0 0 20px;
+}
+
+.my-requests__tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.my-requests__tab {
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: white;
+    color: var(--anthracite);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.my-requests__tab--active {
+    background: var(--anthracite);
+    border-color: var(--anthracite);
+    color: white;
+}
+
+.my-requests__error {
+    color: #B3261E;
+    font-size: 13px;
+    margin: 0 0 16px;
+}
+
+.my-requests__list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.my-request-card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 18px;
+}
+
+.my-request-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.my-request-card__name {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--anthracite);
+    margin: 0;
+}
+
+.my-request-card__date {
+    font-size: 12px;
+    color: var(--muted);
+    margin: 0;
+}
+
+.my-request-card__cancel {
+    margin-top: 14px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border: none;
+    border-radius: 999px;
+    background: #F9DDDA;
+    color: #B3261E;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+@media (min-width: 768px) {
+    .my-requests {
+        max-width: 800px;
+        padding: 48px 32px 80px;
+    }
+
+    .my-requests__list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .my-requests {
+        max-width: 1100px;
+    }
+
+    .my-requests__list {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
