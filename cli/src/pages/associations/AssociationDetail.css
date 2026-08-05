@@ -38,9 +38,9 @@
 }
 
 .association-header__name {
-    font-family: "Poppins", sans-serif;
+    font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 22px;
+    font-size: var(--h1-size);
     color: var(--anthracite);
     margin: 0 0 8px;
 }
@@ -80,15 +80,15 @@
 }
 
 .association-section__title {
-    font-family: "Poppins", sans-serif;
+    font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 17px;
+    font-size: var(--h2-size);
     color: var(--anthracite);
     margin: 0 0 12px;
 }
 
 .association-section__text {
-    font-size: 14px;
+    font-size: var(--text-secondary-size);
     line-height: 1.6;
     color: var(--muted);
     margin: 0;

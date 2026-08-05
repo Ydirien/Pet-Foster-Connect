@@ -12,15 +12,15 @@
 }
 
 .register__title {
-    font-family: "Poppins", sans-serif;
+    font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 24px;
+    font-size: var(--h1-size);
     color: var(--anthracite);
     margin: 0 0 10px;
 }
 
 .register__subtitle {
-    font-size: 14px;
+    font-size: var(--text-secondary-size);
     line-height: 1.5;
     color: var(--muted);
     margin: 0 0 24px;

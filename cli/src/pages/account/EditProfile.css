@@ -20,9 +20,9 @@
 }
 
 .edit-profile__title {
-    font-family: "Poppins", sans-serif;
+    font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 22px;
+    font-size: var(--h1-size);
     color: var(--anthracite);
     margin: 0 0 24px;
 }

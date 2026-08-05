@@ -18,15 +18,15 @@
 }
 
 .received-requests__title {
-    font-family: "Poppins", sans-serif;
+    font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 22px;
+    font-size: var(--h1-size);
     color: var(--anthracite);
     margin: 0 0 6px;
 }
 
 .received-requests__subtitle {
-    font-size: 15px;
+    font-size: var(--text-secondary-size);
     color: var(--muted);
     margin: 0 0 20px;
 }

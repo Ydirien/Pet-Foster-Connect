@@ -16,6 +16,10 @@
 }
 
 .not-found__title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: var(--h1-size);
+    color: var(--anthracite);
     margin: 8px 0 0;
 }
 

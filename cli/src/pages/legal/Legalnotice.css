@@ -6,9 +6,9 @@
 }
 
 .legal-notice__title {
-    font-family: "Poppins", sans-serif;
+    font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 24px;
+    font-size: var(--h1-size);
     color: var(--anthracite);
     margin: 0 0 32px;
 }
@@ -18,14 +18,15 @@
 }
 
 .legal-notice__block h2 {
-    font-size: 16px;
+    font-family: var(--font-heading);
+    font-size: var(--h2-size);
     font-weight: 600;
     color: var(--anthracite);
     margin: 0 0 8px;
 }
 
 .legal-notice__block p {
-    font-size: 14px;
+    font-size: var(--text-secondary-size);
     line-height: 1.7;
     color: var(--muted);
     margin: 0;

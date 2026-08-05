@@ -27,15 +27,15 @@
 }
 
 .hero h1 {
-    font-family: "Poppins", sans-serif;
+    font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 26px;
+    font-size: var(--h1-size);
     color: var(--anthracite);
     margin: 0;
 }
 
 .hero p {
-    font-size: 14px;
+    font-size: var(--text-secondary-size);
     color: var(--muted);
     margin: 0 0 8px;
 }
@@ -135,9 +135,9 @@
 }
 
 .tutorial-section__title {
-    font-family: "Poppins", sans-serif;
+    font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 22px;
+    font-size: var(--h2-size);
     color: var(--anthracite);
     margin: 0 0 28px;
 }
