@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from "../../services/userService";
 import type { CurrentUser } from "../../types/Auth";
 import { EditFosterProfile } from "./EditFosterProfile";
-import { EditAssociationProfile } from "./EditassociationProfile";
+import { EditAssociationProfile } from "./EditAssociationProfile";
 import "./EditProfile.css";
 
 export function EditProfile() {
