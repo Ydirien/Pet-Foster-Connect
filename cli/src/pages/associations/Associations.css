@@ -1,0 +1,106 @@
+.associations-list {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+    background: var(--creme);
+    text-align: left;
+}
+
+.associations-list__title {
+    margin: 0 0 8px;
+}
+
+.associations-list__subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0 0 24px;
+}
+
+.associations-list__filters {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 320px;
+    margin-bottom: 24px;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: white;
+}
+
+.associations-list__state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+}
+
+.associations-list__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+.association-card {
+    display: block;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 20px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease;
+}
+
+.association-card:hover {
+    border-color: var(--terracotta);
+}
+
+.association-card__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    background: var(--line);
+    color: var(--muted);
+}
+
+.association-card__icon--photo {
+    object-fit: cover;
+}
+
+.association-card__name {
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--anthracite);
+    margin: 0 0 6px;
+}
+
+.association-card__city {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--sauge-dark);
+    margin: 0 0 10px;
+}
+
+.association-card__description {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--muted);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+@media (min-width: 768px) {
+    .associations-list {
+        padding: 48px 32px 80px;
+    }
+}
