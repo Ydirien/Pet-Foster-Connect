@@ -68,15 +68,6 @@ export function AppRoutes() {
                 }
             />
             <Route
-                path="/candidats/:fosterId"
-                element={
-                    <ProtectedRoute role="association">
-                        <CandidateProfile />
-                    </ProtectedRoute>
-                }
-            />
-
-            <Route
                 path="/candidats/:requestId"
                 element={
                     <ProtectedRoute role="association">
