@@ -46,6 +46,7 @@ export function ReceivedRequests() {
 
     return (
         <section className="received-requests">
+          <div className="received-requests__inner">
             <h1 className="received-requests__title">Demandes reçues</h1>
             <p className="received-requests__subtitle">
                 {requests.length} demande{requests.length > 1 ? "s" : ""} au total
@@ -147,6 +148,7 @@ export function ReceivedRequests() {
                     ))}
                 </div>
             )}
+          </div>
         </section>
     );
 }
