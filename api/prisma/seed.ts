@@ -10,10 +10,17 @@ import { saveOptimizedAnimalImage } from "../src/lib/image-processing.ts";
 // les mêmes fichiers plutôt que d'en dupliquer une copie côté api.
 const DOGS_ASSETS_DIR = path.join(process.cwd(), "..", "cli", "src", "assets", "chiens");
 
+// En docker-compose, le port publié côté hôte (API_LOCAL_PORT) peut différer
+// du port d'écoute interne du conteneur (PORT/config.port) : le navigateur
+// doit joindre le premier, pas le second. API_PUBLIC_URL permet de le
+// préciser explicitement ; sans docker (API_LOCAL_PORT === PORT) les deux
+// coïncident et le fallback sur config.port suffit.
+const API_PUBLIC_URL = process.env.API_PUBLIC_URL || `http://localhost:${config.port}`;
+
 async function seedAnimalImage(filename: string): Promise<string> {
     const buffer = await readFile(path.join(DOGS_ASSETS_DIR, filename));
     const relativePath = await saveOptimizedAnimalImage(buffer);
-    return `http://localhost:${config.port}${relativePath}`;
+    return `${API_PUBLIC_URL}${relativePath}`;
 }
 
 // Référentiel des espèces (idempotent : upsert par nom unique).
