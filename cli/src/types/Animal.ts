@@ -30,6 +30,7 @@ export interface Animal {
 
 export interface AnimalFilters {
     speciesId?: number;
+    associationId?: number;
     city?: string;
     breed?: string;
     status?: AnimalStatus;
