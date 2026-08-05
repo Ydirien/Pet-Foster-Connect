@@ -158,3 +158,9 @@
         padding: 64px 20px 100px;
     }
 }
+
+@media (min-width: 1024px) {
+    .register__inner {
+        max-width: 600px;
+    }
+}
