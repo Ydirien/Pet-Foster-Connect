@@ -34,25 +34,25 @@ export function Register() {
             await register(
                 role === "foster"
                     ? {
-                          role,
-                          email,
-                          password,
-                          confirm: confirmPassword,
-                          city,
-                          postalCode: postalCode || undefined,
-                          firstName,
-                          lastName,
-                      }
+                            role,
+                            email,
+                            password,
+                            confirm: confirmPassword,
+                            city,
+                            postalCode: postalCode || undefined,
+                            firstName,
+                            lastName,
+                        }
                     : {
-                          role,
-                          email,
-                          password,
-                          confirm: confirmPassword,
-                          city,
-                          postalCode: postalCode || undefined,
-                          name,
-                          siret: siret || undefined,
-                      },
+                            role,
+                            email,
+                            password,
+                            confirm: confirmPassword,
+                            city,
+                            postalCode: postalCode || undefined,
+                            name,
+                            siret: siret || undefined,
+                        },
             );
             navigate("/connexion", { state: { justRegistered: true } });
         } catch (err) {
@@ -213,6 +213,7 @@ export function Register() {
                 <p className="register__legal">
                     En créant un compte, vous acceptez nos{" "}
                     <Link to="/mentions-legales">mentions légales</Link>.
+                    <Link to="/politique-de-confidentialite">politique de confidentialité</Link>.
                 </p>
             </div>
         </section>

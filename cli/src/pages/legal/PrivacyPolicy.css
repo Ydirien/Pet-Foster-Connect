@@ -1,0 +1,38 @@
+.privacy-policy {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 48px 20px 60px;
+    text-align: left;
+}
+
+.privacy-policy__title {
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--anthracite);
+    margin: 0 0 32px;
+}
+
+.privacy-policy__block {
+    margin-bottom: 28px;
+}
+
+.privacy-policy__block h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--anthracite);
+    margin: 0 0 8px;
+}
+
+.privacy-policy__block p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--muted);
+    margin: 0;
+}
+
+@media (min-width: 768px) {
+    .privacy-policy {
+        padding: 64px 32px 80px;
+    }
+}

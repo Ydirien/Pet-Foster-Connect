@@ -6,6 +6,7 @@ export function Footer() {
         <footer className="footer">
             <nav className="footer__links">
                 <Link to="/mentions-legales" className="footer__link">Mentions légales</Link>
+                <Link to="/politique-de-confidentialite" className="footer__link">Politique de confidentialité</Link>
             </nav>
             <p className="footer__copyright">
                 © {new Date().getFullYear()} Pet Foster Connect. Tous droits réservés.

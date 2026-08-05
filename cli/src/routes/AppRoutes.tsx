@@ -17,6 +17,7 @@ import { CandidateProfile } from "../pages/foster-requests/CandidateProfile";
 import { FosterRequests } from "../pages/foster-requests/FosterRequests";
 import { LegalNotice } from "../pages/legal/LegalNotice";
 import { NotFound } from "../pages/not-found/NotFound";
+import { PrivacyPolicy } from "../pages/legal/PrivacyPolicy";
 
 export function AppRoutes() {
     return (
@@ -94,6 +95,7 @@ export function AppRoutes() {
             />
 
             <Route path="/mentions-legales" element={<LegalNotice />} />
+            <Route path="/politique-de-confidentialite" element={<PrivacyPolicy />} />
             <Route path="*" element={<NotFound />} />
         </Routes>
     );
