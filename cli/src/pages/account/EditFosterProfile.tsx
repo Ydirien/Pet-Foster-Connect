@@ -136,6 +136,7 @@ export function EditFosterProfile({ account }: EditFosterProfileProps) {
 
     return (
         <form className="edit-profile" onSubmit={handleSubmit}>
+          <div className="edit-profile__inner">
             <h1 className="edit-profile__title">Modifier mes informations</h1>
 
             <label
@@ -383,6 +384,7 @@ export function EditFosterProfile({ account }: EditFosterProfileProps) {
             <button type="submit" className="edit-profile__submit" disabled={isSubmitting}>
                 {isSubmitting ? "Enregistrement..." : "Enregistrer"}
             </button>
+          </div>
         </form>
     );
 }
