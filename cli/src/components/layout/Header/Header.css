@@ -5,6 +5,7 @@
     justify-content: space-between;
     background: var(--terracotta);
     padding: 16px 20px;
+    box-shadow: 0 2px 8px rgba(43, 42, 40, 0.08);
 }
 
 .header__burger {
