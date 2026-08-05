@@ -93,6 +93,7 @@ export function CandidateProfile() {
 
     return (
         <section className="candidate-profile">
+          <div className="candidate-profile__inner">
             <div className="candidate-profile__header">
                 {candidate.imageUrl ? (
                     <img className="candidate-profile__avatar" src={candidate.imageUrl} alt="" />
@@ -237,6 +238,7 @@ export function CandidateProfile() {
             ) : (
                 <p className="candidate-profile__decided">{REQUEST_STATUS_LABELS[request.status]}</p>
             )}
+          </div>
         </section>
     );
 }
