@@ -54,6 +54,7 @@
     padding: 20px;
     color: white;
     box-shadow: var(--shadow-md);
+
 }
 
 .animal-detail h1 {
@@ -279,7 +280,6 @@
 
     .animal-detail {
         margin: 0;
-        border-radius: 20px;
     }
 
     .animal-detail-sidebar {
