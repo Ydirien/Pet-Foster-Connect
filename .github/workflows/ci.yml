@@ -1,0 +1,86 @@
+# Objectif de ce workflow
+# - Lancer les tests
+# - Vérifier que le front-end compile
+name: Run integration tests on API
+
+# Définir les évènements qui déclenche le workflow
+on:
+  push: # Un push ou un merge va déclencher le workflow
+    branches:
+      - main
+  pull_request: # La création d'une PR vers main va déclencher le workflow
+    branches:
+      - main
+
+# Suites d'étapes qui s'éxécute dans un runner
+jobs:
+  # Nom du job (ce qu'on veut)
+  run_api_tests:
+    # Choix du runner
+    runs-on: ubuntu-latest
+    # Étapes du job
+    steps:
+      # Récupérer le code du dépôt dans le runner (action officiel)
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      # Mettre en place Node.js
+      - name: Install Node 24
+        uses: actions/setup-node@v5
+        with:
+          node-version: "24" # Spécifie la version de Node.js
+
+      # Installer les dépendances
+      - name: Install dependencies
+        working-directory: api
+        run: npm install
+
+      # Generate Prisma Client
+      - name: Generate Prisma Client
+        working-directory: api
+        run: npm run db:generate
+
+      # Créer le fichier d'environnement de test (ignoré par Git, recréé ici
+      # avec des identifiants jetables : la base de test n'existe que le
+      # temps du job)
+      - name: Create test env file
+        working-directory: api
+        run: |
+          mkdir -p tests/config
+          cat > tests/config/.env.test << 'EOF'
+          NODE_ENV=test
+          PORT=7357
+          POSTGRES_USER=postgres
+          POSTGRES_PASSWORD=postgres
+          POSTGRES_DB=petfosterconnecttest
+          POSTGRES_PORT=5437
+          DATABASE_URL=postgresql://postgres:postgres@localhost:5437/petfosterconnecttest
+          ACCESS_TOKEN_SECRET=test-access-token-secret
+          ALLOWED_ORIGINS=http://localhost:5173
+          LOG_LEVEL=error
+          EOF
+
+      # Exécuter les tests
+      - name: Run tests
+        working-directory: api
+        run: npm run test
+
+  run_cli_build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Install Node 24
+        uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+
+      - name: Install dependencies
+        working-directory: cli
+        run: npm install
+
+      # Vérifie que le typage TypeScript et le build Vite passent sans erreur
+      - name: Build front-end
+        working-directory: cli
+        run: npm run build
