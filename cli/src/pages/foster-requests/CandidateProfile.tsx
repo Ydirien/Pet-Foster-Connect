@@ -4,6 +4,7 @@ import { Home, Trees, Footprints, User, Mail, Phone } from "lucide-react";
 import { getFosterRequestById } from "../../services/fosterRequestService";
 import { getFosterProfileForAssociation } from "../../services/userService";
 import { useFosterRequestDecision } from "../../hooks/useFosterRequestDecision";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import type { FosterRequest, FosterRequestStatus } from "../../types/FosterRequest";
 import type { FosterProfileForAssociation } from "../../types/Foster";
 import "./CandidateProfile.css";
@@ -48,6 +49,7 @@ export function CandidateProfile() {
     const [loadError, setLoadError] = useState<string | null>(null);
     const { decide, isUpdating, error: decisionError } = useFosterRequestDecision();
     const error = loadError ?? decisionError;
+    useDocumentTitle(candidate ? `${candidate.firstName} ${candidate.lastName}` : "Profil du candidat");
 
     useEffect(() => {
         if (!requestId) {

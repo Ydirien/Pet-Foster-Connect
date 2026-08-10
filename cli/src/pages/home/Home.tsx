@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getSpecies } from "../../services/animalService";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import type { Species } from "../../types/Animal";
 import heroImage from "../../assets/home/Hero.jpg";
 import card1Image from "../../assets/home/card_1.jpg";
@@ -40,6 +41,7 @@ export function Home() {
     const [selectedSpecies, setSelectedSpecies] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const navigate = useNavigate();
+    useDocumentTitle("Accueil");
 
     useEffect(() => {
         getSpecies()
@@ -59,7 +61,9 @@ export function Home() {
                 <div className="hero__content">
                     <h1>Aidez n'a jamais été si simple</h1>
                     <p>Une garde temporaire basée sur une relation de confiance</p>
+                    <label htmlFor="species-search" className="sr-only">Quel animal cherchez-vous ?</label>
                     <select
+                        id="species-search"
                         className="animal-select"
                         value={selectedSpecies}
                         onChange={(e) => setSelectedSpecies(e.target.value)}
@@ -74,18 +78,21 @@ export function Home() {
                             </option>
                         ))}
                     </select>
-                    <button onClick={handleSearch}>Sauvez un animal</button>
+                    <button type="button" onClick={handleSearch}>Sauvez un animal</button>
                 </div>
             </section>
 
             <section className="info-bar">
                 <div className="info-slider">
+                    {/* La liste est dupliquée pour l'effet de défilement infini en CSS :
+                        on masque la copie aux lecteurs d'écran pour éviter qu'ils
+                        n'annoncent deux fois le même contenu. */}
                     <div className="info-slide__track">
                         {STATS.map((text, i) => (
                             <span key={`a-${i}`}>{text}</span>
                         ))}
                         {STATS.map((text, i) => (
-                            <span key={`b-${i}`}>{text}</span>
+                            <span key={`b-${i}`} aria-hidden="true">{text}</span>
                         ))}
                     </div>
                 </div>

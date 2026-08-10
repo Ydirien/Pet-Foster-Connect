@@ -5,6 +5,7 @@ import type { AnimalDetail as AnimalDetailData } from "../../types/Animal";
 import { getAnimalBySlug } from "../../services/animalService";
 import { createFosterRequest } from "../../services/fosterRequestService";
 import { useAuth } from "../../context/useAuth";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import './AnimalDetail.css';
 
 export function AnimalDetail() {
@@ -18,6 +19,7 @@ export function AnimalDetail() {
     const [requestError, setRequestError] = useState<string | null>(null);
     const [requestSent, setRequestSent] = useState(false);
     const navigate = useNavigate();
+    useDocumentTitle(animal ? animal.name : "Animal");
 
     useEffect(() => {
         if (!slug) return;
@@ -53,7 +55,11 @@ export function AnimalDetail() {
         <p className="btn btn--disabled">Demande envoyée !</p>
     ) : isRequestFormOpen ? (
         <div className="foster-request">
+            <label htmlFor="foster-request-message" className="sr-only">
+                Message pour l'association (facultatif)
+            </label>
             <textarea
+                id="foster-request-message"
                 className="foster-request__message"
                 placeholder="Un message pour l'association (facultatif)..."
                 value={message}
@@ -79,7 +85,7 @@ export function AnimalDetail() {
         <div className="animal-detail-main">
         <section className="animal-hero">
             {animal.imageUrl ? (
-            <img className="animal-card__image" src={animal.imageUrl} alt="" />
+            <img className="animal-card__image" src={animal.imageUrl} alt={`Photo de ${animal.name}`} />
             ) : (
             <div className="animal-card__image animal-card__image--placeholder" />
             )}

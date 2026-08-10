@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { SlidersHorizontal } from "lucide-react";
 import { listAnimals } from "../../services/animalService";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import type { Animal, AgeCategory, Gender } from "../../types/Animal";
 import { AnimalCard } from "../../components/common/AnimalCard/AnimalCard";
 import { CityRadiusFilter, type CityRadiusValue } from "../../components/common/CityRadiusFilter/CityRadiusFilter";
@@ -33,6 +34,7 @@ export function Animals() {
     const [ageCategory, setAgeCategory] = useState<AgeCategory | "">("");
     const [gender, setGender] = useState<Gender | "">("");
     const [neutered, setNeutered] = useState<"" | "true" | "false">("");
+    useDocumentTitle("Animaux à accueillir");
 
     useEffect(() => {
         setIsLoading(true);
@@ -75,6 +77,10 @@ export function Animals() {
 
     return (
         <div className="animals-layout">
+            {/* Visuellement caché : le design ne prévoit pas de titre ici, mais la
+                page doit tout de même avoir un h1 pour la navigation par titres. */}
+            <h1 className="sr-only">Animaux à accueillir</h1>
+
             <section className="filter-bar">
                 <button
                     type="button"

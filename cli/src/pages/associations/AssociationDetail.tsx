@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Home, Mail, MapPin, Phone } from "lucide-react";
 import { getAssociationBySlug } from "../../services/associationService";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import type { AssociationDetail as AssociationDetailData } from "../../types/Association";
 import { AnimalCard } from "../../components/common/AnimalCard/AnimalCard";
 import "./AssociationDetail.css";
@@ -10,6 +11,7 @@ export function AssociationDetail() {
     const { slug } = useParams<{ slug: string }>();
     const [association, setAssociation] = useState<AssociationDetailData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    useDocumentTitle(association ? association.name : "Association");
 
     useEffect(() => {
         if (!slug) return;

@@ -5,6 +5,7 @@ import type { CurrentFosterUser } from "../../types/Auth";
 import type { HousingType, ExperienceLevel, WalkTime, HomePresence, HouseholdPet } from "../../types/Foster";
 import { updateFosterProfile, uploadProfilePhoto, addHouseholdPet, removeHouseholdPet } from "../../services/userService";
 import { getSpecies } from "../../services/animalService";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import type { Species } from "../../types/Animal";
 import "./EditProfile.css";
 
@@ -53,6 +54,7 @@ export function EditFosterProfile({ account }: EditFosterProfileProps) {
     const [newPetNeutered, setNewPetNeutered] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    useDocumentTitle("Modifier mes informations");
 
     useEffect(() => {
         getSpecies().then(setSpecies).catch(() => setSpecies([]));
@@ -171,8 +173,9 @@ export function EditFosterProfile({ account }: EditFosterProfileProps) {
 
                 <div className="edit-profile__row">
                     <div className="edit-profile__field">
-                        <label className="edit-profile__label">Prénom</label>
+                        <label className="edit-profile__label" htmlFor="firstName">Prénom</label>
                         <input
+                            id="firstName"
                             className="edit-profile__input"
                             value={firstName}
                             onChange={(event) => setFirstName(event.target.value)}
@@ -180,8 +183,9 @@ export function EditFosterProfile({ account }: EditFosterProfileProps) {
                         />
                     </div>
                     <div className="edit-profile__field">
-                        <label className="edit-profile__label">Nom</label>
+                        <label className="edit-profile__label" htmlFor="lastName">Nom</label>
                         <input
+                            id="lastName"
                             className="edit-profile__input"
                             value={lastName}
                             onChange={(event) => setLastName(event.target.value)}
@@ -190,16 +194,17 @@ export function EditFosterProfile({ account }: EditFosterProfileProps) {
                     </div>
                 </div>
 
-                <label className="edit-profile__label">Téléphone</label>
-                <input className="edit-profile__input" value={phone} onChange={(event) => setPhone(event.target.value)} />
+                <label className="edit-profile__label" htmlFor="phone">Téléphone</label>
+                <input id="phone" className="edit-profile__input" value={phone} onChange={(event) => setPhone(event.target.value)} />
 
-                <label className="edit-profile__label">Adresse</label>
-                <input className="edit-profile__input" value={address} onChange={(event) => setAddress(event.target.value)} />
+                <label className="edit-profile__label" htmlFor="address">Adresse</label>
+                <input id="address" className="edit-profile__input" value={address} onChange={(event) => setAddress(event.target.value)} />
 
                 <div className="edit-profile__row">
                     <div className="edit-profile__field">
-                        <label className="edit-profile__label">Ville</label>
+                        <label className="edit-profile__label" htmlFor="city">Ville</label>
                         <input
+                            id="city"
                             className="edit-profile__input"
                             value={city}
                             onChange={(event) => setCity(event.target.value)}
@@ -207,8 +212,9 @@ export function EditFosterProfile({ account }: EditFosterProfileProps) {
                         />
                     </div>
                     <div className="edit-profile__field">
-                        <label className="edit-profile__label">Code postal</label>
+                        <label className="edit-profile__label" htmlFor="postalCode">Code postal</label>
                         <input
+                            id="postalCode"
                             className="edit-profile__input"
                             value={postalCode}
                             onChange={(event) => setPostalCode(event.target.value)}
@@ -222,8 +228,9 @@ export function EditFosterProfile({ account }: EditFosterProfileProps) {
 
                 <div className="edit-profile__row">
                     <div className="edit-profile__field">
-                        <label className="edit-profile__label">Type de logement</label>
+                        <label className="edit-profile__label" htmlFor="housingType">Type de logement</label>
                         <select
+                            id="housingType"
                             className="edit-profile__input"
                             value={housingType}
                             onChange={(event) => setHousingType(event.target.value as HousingType | "")}
@@ -234,8 +241,9 @@ export function EditFosterProfile({ account }: EditFosterProfileProps) {
                         </select>
                     </div>
                     <div className="edit-profile__field">
-                        <label className="edit-profile__label">Superficie (m2)</label>
+                        <label className="edit-profile__label" htmlFor="housingSize">Superficie (m2)</label>
                         <input
+                            id="housingSize"
                             type="number"
                             min={0}
                             className="edit-profile__input"
@@ -252,8 +260,9 @@ export function EditFosterProfile({ account }: EditFosterProfileProps) {
 
                 {hasGarden && (
                     <>
-                        <label className="edit-profile__label">Superficie du jardin (m2)</label>
+                        <label className="edit-profile__label" htmlFor="gardenSize">Superficie du jardin (m2)</label>
                         <input
+                            id="gardenSize"
                             type="number"
                             min={0}
                             className="edit-profile__input"
@@ -267,8 +276,9 @@ export function EditFosterProfile({ account }: EditFosterProfileProps) {
             <div className="edit-profile__card">
                 <h2 className="edit-profile__card-title">Disponibilité</h2>
 
-                <label className="edit-profile__label">Temps de promenade / jour</label>
+                <label className="edit-profile__label" htmlFor="walkTime">Temps de promenade / jour</label>
                 <select
+                    id="walkTime"
                     className="edit-profile__input"
                     value={walkTime}
                     onChange={(event) => setWalkTime(event.target.value as WalkTime | "")}
@@ -279,8 +289,9 @@ export function EditFosterProfile({ account }: EditFosterProfileProps) {
                     ))}
                 </select>
 
-                <label className="edit-profile__label">Présence au domicile</label>
+                <label className="edit-profile__label" htmlFor="homePresence">Présence au domicile</label>
                 <select
+                    id="homePresence"
                     className="edit-profile__input"
                     value={homePresence}
                     onChange={(event) => setHomePresence(event.target.value as HomePresence | "")}
@@ -295,8 +306,9 @@ export function EditFosterProfile({ account }: EditFosterProfileProps) {
             <div className="edit-profile__card">
                 <h2 className="edit-profile__card-title">Expérience</h2>
 
-                <label className="edit-profile__label">Niveau d'expérience</label>
+                <label className="edit-profile__label" htmlFor="experienceLevel">Niveau d'expérience</label>
                 <select
+                    id="experienceLevel"
                     className="edit-profile__input"
                     value={experienceLevel}
                     onChange={(event) => setExperienceLevel(event.target.value as ExperienceLevel | "")}
@@ -307,8 +319,9 @@ export function EditFosterProfile({ account }: EditFosterProfileProps) {
                     <option value="experienced">Expérimenté(e)</option>
                 </select>
 
-                <label className="edit-profile__label">Description de votre expérience</label>
+                <label className="edit-profile__label" htmlFor="experienceDescription">Description de votre expérience</label>
                 <textarea
+                    id="experienceDescription"
                     className="edit-profile__textarea"
                     value={experienceDescription}
                     onChange={(event) => setExperienceDescription(event.target.value)}
@@ -316,13 +329,14 @@ export function EditFosterProfile({ account }: EditFosterProfileProps) {
             </div>
 
             <div className="edit-profile__card">
-                <h2 className="edit-profile__card-title">Budget mensuel estimé (€)</h2>
+                <h2 className="edit-profile__card-title" id="monthlyBudget-label">Budget mensuel estimé (€)</h2>
                 <input
                     type="number"
                     min={0}
                     max={9999.99}
                     step="0.01"
                     className="edit-profile__input"
+                    aria-labelledby="monthlyBudget-label"
                     value={monthlyBudget}
                     onChange={(event) => setMonthlyBudget(event.target.value)}
                 />
@@ -347,7 +361,9 @@ export function EditFosterProfile({ account }: EditFosterProfileProps) {
                 )}
 
                 <div className="edit-profile__add-pet">
+                    <label htmlFor="newPetSpeciesId" className="sr-only">Espèce de l'animal déjà présent</label>
                     <select
+                        id="newPetSpeciesId"
                         className="edit-profile__input"
                         value={newPetSpeciesId}
                         onChange={(event) => setNewPetSpeciesId(event.target.value)}
@@ -357,7 +373,9 @@ export function EditFosterProfile({ account }: EditFosterProfileProps) {
                             <option key={s.id} value={s.id}>{s.name}</option>
                         ))}
                     </select>
+                    <label htmlFor="newPetAge" className="sr-only">Âge de l'animal déjà présent</label>
                     <input
+                        id="newPetAge"
                         type="number"
                         min={0}
                         placeholder="Âge"

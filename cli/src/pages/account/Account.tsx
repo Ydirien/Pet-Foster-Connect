@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from "../../services/userService";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import type { CurrentUser } from "../../types/Auth";
 import { FosterAccountView } from "./FosterAccountView";
 import { AssociationAccountView } from "./AssociationAccountView";
@@ -10,6 +11,7 @@ export function Account() {
     const [account, setAccount] = useState<CurrentUser | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
+    useDocumentTitle("Mon compte");
 
     useEffect(() => {
         getCurrentUser()

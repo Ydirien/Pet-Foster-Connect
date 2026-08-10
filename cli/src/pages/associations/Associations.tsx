@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Home, MapPin } from "lucide-react";
 import { listAssociations } from "../../services/associationService";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import type { Association } from "../../types/Association";
 import { CityRadiusFilter, type CityRadiusValue } from "../../components/common/CityRadiusFilter/CityRadiusFilter";
 import "./Associations.css";
@@ -15,6 +16,7 @@ export function Associations() {
         city: null,
         radiusKm: DEFAULT_RADIUS_KM,
     });
+    useDocumentTitle("Les associations partenaires");
 
     useEffect(() => {
         setIsLoading(true);

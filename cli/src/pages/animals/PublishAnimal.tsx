@@ -9,6 +9,7 @@ import {
     updateAnimal,
     uploadAnimalImage,
 } from "../../services/animalService";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import type { Gender, Species } from "../../types/Animal";
 import "./PublishAnimal.css";
 
@@ -34,6 +35,7 @@ export function PublishAnimal() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const navigate = useNavigate();
+    useDocumentTitle(isEditing ? "Modifier l'animal" : "Publier un animal");
 
     useEffect(() => {
         getSpecies()
@@ -233,10 +235,11 @@ export function PublishAnimal() {
                     </div>
                     <div className="publish-animal__field">
                         <span className="publish-animal__label">Sexe</span>
-                        <div className="publish-animal__toggle">
+                        <div className="publish-animal__toggle" role="group" aria-label="Sexe">
                             <button
                                 type="button"
                                 className={gender === "male" ? "publish-animal__toggle-btn publish-animal__toggle-btn--active" : "publish-animal__toggle-btn"}
+                                aria-pressed={gender === "male"}
                                 onClick={() => setGender("male")}
                             >
                                 Mâle
@@ -244,6 +247,7 @@ export function PublishAnimal() {
                             <button
                                 type="button"
                                 className={gender === "female" ? "publish-animal__toggle-btn publish-animal__toggle-btn--active" : "publish-animal__toggle-btn"}
+                                aria-pressed={gender === "female"}
                                 onClick={() => setGender("female")}
                             >
                                 Femelle
@@ -253,10 +257,11 @@ export function PublishAnimal() {
                 </div>
 
                 <span className="publish-animal__label">Statut</span>
-                <div className="publish-animal__toggle publish-animal__toggle--full">
+                <div className="publish-animal__toggle publish-animal__toggle--full" role="group" aria-label="Statut">
                     <button
                         type="button"
                         className={neutered ? "publish-animal__toggle-btn publish-animal__toggle-btn--active" : "publish-animal__toggle-btn"}
+                        aria-pressed={neutered}
                         onClick={() => setNeutered(true)}
                     >
                         Castré
@@ -264,6 +269,7 @@ export function PublishAnimal() {
                     <button
                         type="button"
                         className={!neutered ? "publish-animal__toggle-btn publish-animal__toggle-btn--active" : "publish-animal__toggle-btn"}
+                        aria-pressed={!neutered}
                         onClick={() => setNeutered(false)}
                     >
                         Non castré
@@ -289,7 +295,7 @@ export function PublishAnimal() {
                 />
 
                 <span className="publish-animal__label">Incompatible avec</span>
-                <div className="publish-animal__pills">
+                <div className="publish-animal__pills" role="group" aria-label="Incompatible avec">
                     {species.map((s) => (
                         <button
                             key={s.id}
@@ -299,6 +305,7 @@ export function PublishAnimal() {
                                     ? "publish-animal__pill publish-animal__pill--active"
                                     : "publish-animal__pill"
                             }
+                            aria-pressed={incompatibleSpeciesIds.includes(s.id)}
                             onClick={() => toggleIncompatibleSpecies(s.id)}
                         >
                             {s.name}

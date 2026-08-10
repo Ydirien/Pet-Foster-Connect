@@ -27,7 +27,7 @@ export function Header() {
             <button
                 type="button"
                 className="header__burger"
-                aria-label="Ouvrir le menu"
+                aria-label={isMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
                 aria-expanded={isMenuOpen}
                 onClick={() => setIsMenuOpen((open) => !open)}
             >

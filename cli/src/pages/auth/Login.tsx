@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { login } from "../../services/AuthService";
 import { useAuth } from "../../context/useAuth";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import "./Login.css";
 
 export function Login() {
@@ -12,6 +13,7 @@ export function Login() {
     const navigate = useNavigate();
     const location = useLocation();
     const auth = useAuth();
+    useDocumentTitle("Connexion");
     const state = location.state as
         | { justRegistered?: boolean; passwordReset?: boolean; from?: { pathname: string } }
         | null;

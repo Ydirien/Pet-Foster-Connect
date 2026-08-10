@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { listFosterRequests, cancelFosterRequest } from "../../services/fosterRequestService";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import type { FosterRequest } from "../../types/FosterRequest";
 import { RequestStatusBadge } from "../../components/common/RequestStatusBadge/RequestStatusBadge";
 import "./MyRequests.css";
@@ -11,6 +12,7 @@ export function MyRequests() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [filter, setFilter] = useState<Filter>("all");
+    useDocumentTitle("Mes demandes d'accueil");
 
     useEffect(() => {
         listFosterRequests()
@@ -53,10 +55,11 @@ export function MyRequests() {
                     {requests.length} demande{requests.length > 1 ? "s" : ""} au total
                 </p>
 
-                <div className="my-requests__tabs">
+                <div className="my-requests__tabs" role="group" aria-label="Filtrer les demandes">
                     <button
                         type="button"
                         className={`my-requests__tab${filter === "all" ? " my-requests__tab--active" : ""}`}
+                        aria-pressed={filter === "all"}
                         onClick={() => setFilter("all")}
                     >
                         Toutes ({requests.length})
@@ -64,6 +67,7 @@ export function MyRequests() {
                     <button
                         type="button"
                         className={`my-requests__tab${filter === "pending" ? " my-requests__tab--active" : ""}`}
+                        aria-pressed={filter === "pending"}
                         onClick={() => setFilter("pending")}
                     >
                         En attente ({pendingCount})
@@ -71,6 +75,7 @@ export function MyRequests() {
                     <button
                         type="button"
                         className={`my-requests__tab${filter === "done" ? " my-requests__tab--active" : ""}`}
+                        aria-pressed={filter === "done"}
                         onClick={() => setFilter("done")}
                     >
                         Traitées ({doneCount})

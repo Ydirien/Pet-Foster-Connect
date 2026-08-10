@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { Lock } from "lucide-react";
 import { requestPasswordReset } from "../../services/AuthService";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import "./PasswordReset.css";
 
 export function ForgotPassword() {
@@ -9,6 +10,7 @@ export function ForgotPassword() {
     const [error, setError] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    useDocumentTitle("Mot de passe oublié");
 
     async function handleSubmit(event: FormEvent) {
         event.preventDefault();

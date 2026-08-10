@@ -1,13 +1,19 @@
 :root {
     --creme: #F6F1E7;
-    --terracotta: #D9784F;
-    --sauge: #6B8F71;
+    /* --terracotta, --sauge et --muted sont utilisées en texte (ou en fond
+       avec du texte blanc par-dessus) un peu partout dans le site. Les
+       teintes d'origine ne passaient pas le contraste minimum de 4.5:1
+       exigé par le RGAA (critère 3.2) une fois testées sur fond blanc/crème :
+       elles ont été assombries pour passer ce seuil, sans changer les
+       couleurs "-dark" qui servent déjà au survol. */
+    --terracotta: #A84F2A;
+    --sauge: #506B55;
     --anthracite: #2B2A28;
     --line: #E3DFD6; /* "Gris medium" de la charte */
 
     --terracotta-dark: #8A431F;
     --sauge-dark: #3E5741;
-    --muted: #7A776E;
+    --muted: #625E55;
 
     --font-heading: "Poppins", sans-serif;
     --font-body: "Inter", sans-serif;

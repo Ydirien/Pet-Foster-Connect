@@ -1,5 +1,5 @@
 # Objectif de ce workflow
-# - Lancer les tests
+# - Lancer les tests de l'API et du front-end
 # - Vérifier que le front-end compile
 name: Run integration tests on API
 
@@ -79,6 +79,11 @@ jobs:
       - name: Install dependencies
         working-directory: cli
         run: npm install
+
+      # Exécute les tests unitaires des composants et pages du front-end
+      - name: Run front-end tests
+        working-directory: cli
+        run: npm run test
 
       # Vérifie que le typage TypeScript et le build Vite passent sans erreur
       - name: Build front-end

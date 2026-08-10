@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Lock } from "lucide-react";
 import { resetPassword } from "../../services/AuthService";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import "./PasswordReset.css";
 
 export function ResetPassword() {
@@ -12,6 +13,7 @@ export function ResetPassword() {
     const [error, setError] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
+    useDocumentTitle("Réinitialiser mon mot de passe");
 
     async function handleSubmit(event: FormEvent) {
         event.preventDefault();

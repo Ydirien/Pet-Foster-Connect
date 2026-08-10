@@ -1,6 +1,9 @@
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import "./PrivacyPolicy.css";
 
 export function PrivacyPolicy() {
+    useDocumentTitle("Politique de confidentialité");
+
     return (
         <section className="privacy-policy">
             <h1 className="privacy-policy__title">Politique de confidentialité</h1>

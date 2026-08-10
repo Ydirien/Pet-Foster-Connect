@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../../services/AuthService";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import type { UserRole } from "../../types/Auth";
 import "./Register.css";
 
@@ -18,6 +19,7 @@ export function Register() {
     const [error, setError] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
+    useDocumentTitle("Créer mon compte");
 
     async function handleSubmit(event: FormEvent) {
         event.preventDefault();
@@ -70,10 +72,11 @@ export function Register() {
                     Rejoignez la communauté Pet Foster Connect et donnez un foyer temporaire à un animal qui en a besoin.
                 </p>
 
-                <div className="register__role-toggle">
+                <div className="register__role-toggle" role="group" aria-label="Je m'inscris en tant que">
                     <button
                         type="button"
                         className={`register__role-btn${role === "foster" ? " register__role-btn--active" : ""}`}
+                        aria-pressed={role === "foster"}
                         onClick={() => setRole("foster")}
                     >
                         Je suis famille d'accueil
@@ -81,6 +84,7 @@ export function Register() {
                     <button
                         type="button"
                         className={`register__role-btn${role === "association" ? " register__role-btn--active" : ""}`}
+                        aria-pressed={role === "association"}
                         onClick={() => setRole("association")}
                     >
                         Je suis une association

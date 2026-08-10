@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ImagePlus } from "lucide-react";
 import type { CurrentAssociationUser } from "../../types/Auth";
 import { updateAssociation, uploadAssociationImage } from "../../services/associationService";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import "./EditProfile.css";
 
 interface EditAssociationProfileProps {
@@ -22,6 +23,7 @@ export function EditAssociationProfile({ account }: EditAssociationProfileProps)
     const [openingHours, setOpeningHours] = useState(account.profile.openingHours ?? "");
     const [error, setError] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    useDocumentTitle("Modifier mes informations");
 
     async function handleImageChange(event: ChangeEvent<HTMLInputElement>) {
         const file = event.target.files?.[0];
@@ -103,16 +105,18 @@ export function EditAssociationProfile({ account }: EditAssociationProfileProps)
                     SIRET : {account.profile.siret ?? "Non renseigné"} (non modifiable)
                 </p>
 
-                <label className="edit-profile__label">Nom de l'association</label>
+                <label className="edit-profile__label" htmlFor="name">Nom de l'association</label>
                 <input
+                    id="name"
                     className="edit-profile__input"
                     value={name}
                     onChange={(event) => setName(event.target.value)}
                     required
                 />
 
-                <label className="edit-profile__label">Adresse</label>
+                <label className="edit-profile__label" htmlFor="address">Adresse</label>
                 <input
+                    id="address"
                     className="edit-profile__input"
                     value={address}
                     onChange={(event) => setAddress(event.target.value)}
@@ -120,8 +124,9 @@ export function EditAssociationProfile({ account }: EditAssociationProfileProps)
 
                 <div className="edit-profile__row">
                     <div className="edit-profile__field">
-                        <label className="edit-profile__label">Ville</label>
+                        <label className="edit-profile__label" htmlFor="city">Ville</label>
                         <input
+                            id="city"
                             className="edit-profile__input"
                             value={city}
                             onChange={(event) => setCity(event.target.value)}
@@ -129,8 +134,9 @@ export function EditAssociationProfile({ account }: EditAssociationProfileProps)
                         />
                     </div>
                     <div className="edit-profile__field">
-                        <label className="edit-profile__label">Code postal</label>
+                        <label className="edit-profile__label" htmlFor="postalCode">Code postal</label>
                         <input
+                            id="postalCode"
                             className="edit-profile__input"
                             value={postalCode}
                             onChange={(event) => setPostalCode(event.target.value)}
@@ -138,8 +144,9 @@ export function EditAssociationProfile({ account }: EditAssociationProfileProps)
                     </div>
                 </div>
 
-                <label className="edit-profile__label">Horaires</label>
+                <label className="edit-profile__label" htmlFor="openingHours">Horaires</label>
                 <textarea
+                    id="openingHours"
                     className="edit-profile__textarea"
                     placeholder="Ex : Lundi - vendredi : 10h30 - 12h30 / 14h00 - 17h00"
                     value={openingHours}
@@ -148,9 +155,10 @@ export function EditAssociationProfile({ account }: EditAssociationProfileProps)
             </div>
 
             <div className="edit-profile__card">
-                <h2 className="edit-profile__card-title">Description</h2>
+                <h2 className="edit-profile__card-title" id="description-label">Description</h2>
                 <textarea
                     className="edit-profile__textarea"
+                    aria-labelledby="description-label"
                     value={description}
                     onChange={(event) => setDescription(event.target.value)}
                 />

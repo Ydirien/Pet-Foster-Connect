@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import "./NotFound.css";
 
 export function NotFound() {
+    useDocumentTitle("Page introuvable");
+
     return (
         <section className="not-found">
             <p className="not-found__code">404</p>

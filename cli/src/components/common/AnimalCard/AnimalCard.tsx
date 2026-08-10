@@ -30,7 +30,9 @@ export function AnimalCard({ animal }: AnimalCardProps) {
                 </div>
 
                 <div className="animal-card__stat">
-                    <span className="animal-card__gender-icon">
+                    {/* Décoratif : le texte "Mâle"/"Femelle" juste en dessous porte déjà
+                        l'information, inutile de faire lire le symbole en plus. */}
+                    <span className="animal-card__gender-icon" aria-hidden="true">
                         {animal.gender === "male" ? "♂" : "♀"}
                     </span>
                     <span className="animal-card__stat-label">Sexe</span>
