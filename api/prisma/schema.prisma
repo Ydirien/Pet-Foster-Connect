@@ -206,6 +206,10 @@ model HouseholdPet {
 // Demandes d'accueil
 // -----------------------------
 
+// NB : la règle "une seule demande active (pending/accepted) par couple
+// foster/animal" est en plus imposée par un index unique partiel, ajouté à
+// la main dans la migration foster_request_active_unique (le DSL Prisma ne
+// permet pas de déclarer un index avec clause WHERE ici).
 model FosterRequest {
   id            Int           @id @default(autoincrement())
   requestedAt   DateTime      @default(now()) @map("requested_at")

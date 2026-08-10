@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { prisma } from "../models/index.ts";
+import { prisma, Prisma } from "../models/index.ts";
 import z from "zod";
 import { NotFoundError, ForbiddenError, ConflictError } from "../lib/errors.ts";
 import { parseIdFromParams } from "./utils.ts";
@@ -25,6 +25,12 @@ export async function createFosterRequest(req: Request, res: Response) {
     }
 
     // Règle anti-doublon : aucune demande active pour ce couple famille d'accueil/animal.
+    // Ce contrôle donne un message d'erreur rapide dans le cas courant, mais
+    // ne suffit pas seul si deux requêtes de création arrivent en même temps
+    // (les deux peuvent passer ce test avant que l'une des deux ne soit
+    // enregistrée). Le vrai rempart contre ce cas est l'index unique partiel
+    // posé en base par la migration foster_request_active_unique : on
+    // capture ci-dessous l'erreur qu'il déclenche si la course se produit.
     const existingActive = await prisma.fosterRequest.findFirst({
         where: {
             fosterId: req.user.id,
@@ -36,16 +42,23 @@ export async function createFosterRequest(req: Request, res: Response) {
         throw new ConflictError("Une demande active existe déjà pour cet animal");
     }
 
-    const request = await prisma.fosterRequest.create({
-        data: {
-            fosterId: req.user.id,
-            animalId: input.animalId,
-            message: input.message ?? null,
-        },
-        include: { animal: true },
-    });
+    try {
+        const request = await prisma.fosterRequest.create({
+            data: {
+                fosterId: req.user.id,
+                animalId: input.animalId,
+                message: input.message ?? null,
+            },
+            include: { animal: true },
+        });
 
-    res.status(201).json(request);
+        res.status(201).json(request);
+    } catch (err) {
+        if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+            throw new ConflictError("Une demande active existe déjà pour cet animal");
+        }
+        throw err;
+    }
 }
 
 // GET /api/demandes : filtré selon le rôle connecté.
@@ -129,17 +142,36 @@ export async function updateFosterRequestStatus(req: Request, res: Response) {
 
     // Acceptation : l'animal passe en accueil et toutes les autres demandes
     // actives sur ce même animal deviennent caduques -> rejected.
+    //
+    // Le contrôle "status === pending" fait plus haut ne suffit pas à lui
+    // seul : deux acceptations concurrentes (double clic, ou deux
+    // candidatures du même animal acceptées en même temps) pourraient toutes
+    // les deux passer ce test avant que l'une des deux ne soit enregistrée.
+    //
+    // On rejoue donc ce contrôle de façon atomique côté base, en commençant
+    // TOUJOURS par l'animal (et seulement lui) : c'est la ressource commune
+    // à toutes les demandes concurrentes sur ce même animal, donc la
+    // première transaction à le faire passer de "available" à
+    // "in_foster_care" bloque les autres à cette étape unique. Sans ça, deux
+    // transactions qui mettraient à jour deux demandes différentes puis
+    // essaieraient de rejeter la demande de l'autre pourraient se bloquer
+    // mutuellement (interblocage).
     const accepted = await prisma.$transaction(async (tx) => {
-        const updatedRequest = await tx.fosterRequest.update({
-            where: { id: requestId },
-            data: { status: "accepted" },
-            include: { animal: true },
-        });
-
-        await tx.animal.update({
-            where: { id: request.animalId },
+        const { count: animalClaimed } = await tx.animal.updateMany({
+            where: { id: request.animalId, status: "available" },
             data: { status: "in_foster_care" },
         });
+        if (animalClaimed === 0) {
+            throw new ConflictError("Cette demande a déjà été traitée");
+        }
+
+        const { count } = await tx.fosterRequest.updateMany({
+            where: { id: requestId, status: "pending" },
+            data: { status: "accepted" },
+        });
+        if (count === 0) {
+            throw new ConflictError("Cette demande a déjà été traitée");
+        }
 
         await tx.fosterRequest.updateMany({
             where: {
@@ -150,7 +182,10 @@ export async function updateFosterRequestStatus(req: Request, res: Response) {
             data: { status: "rejected" },
         });
 
-        return updatedRequest;
+        return tx.fosterRequest.findUniqueOrThrow({
+            where: { id: requestId },
+            include: { animal: true },
+        });
     });
 
     res.json(accepted);

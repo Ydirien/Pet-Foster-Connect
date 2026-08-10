@@ -2,9 +2,10 @@
 
 ## Vue d'ensemble
 
-Les tests de l'API sont des **tests d'intégration** : ils démarrent un vrai serveur Express et une vraie base de données PostgreSQL, puis envoient de vraies requêtes HTTP pour vérifier le comportement de l'application de bout en bout.
+L'API a deux types de tests, tous les deux écrits avec le **Node.js Test Runner** (module natif `node:test`), sans Jest ni Mocha :
 
-Le framework utilisé est **Node.js Test Runner** (module natif `node:test`), sans Jest ni Mocha.
+- des **tests d'intégration**, dans `src/controllers/` et `src/middlewares/` : ils démarrent un vrai serveur Express et une vraie base de données PostgreSQL, puis envoient de vraies requêtes HTTP pour vérifier le comportement de l'application de bout en bout.
+- des **tests unitaires**, dans `src/lib/` (`geo.spec.test.ts`, `slug.spec.test.ts`, `tokens.spec.test.ts`) : ils appellent directement les fonctions métier (calcul de distance, génération de slug, génération/vérification de token) sans base de données ni serveur, pour vérifier leur comportement en isolation.
 
 ---
 

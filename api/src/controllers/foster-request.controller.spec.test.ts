@@ -157,6 +157,29 @@ describe("[POST] /api/demandes", () => {
 
         assert.strictEqual(status, 403);
     });
+
+    it("should only accept one of two concurrent duplicate requests for the same animal", async () => {
+        const foster = await createFosterUser();
+        const association = await createAssociationUser();
+        const species = await createSpecies();
+        const animal = await createAnimal(association.id, species.id);
+        const requester = buildAuthedRequester({ id: foster.id, role: "foster" });
+
+        // Envoyées ensemble (pas l'une après l'autre) pour vraiment se
+        // chevaucher côté serveur, et pas seulement côté client.
+        const [first, second] = await Promise.all([
+            requester.post("/demandes", { animalId: animal.id }),
+            requester.post("/demandes", { animalId: animal.id }),
+        ]);
+        const statuses = [first.status, second.status].sort();
+
+        assert.deepStrictEqual(statuses, [201, 409]);
+
+        const activeCount = await prisma.fosterRequest.count({
+            where: { fosterId: foster.id, animalId: animal.id, status: { in: ["pending", "accepted"] } },
+        });
+        assert.strictEqual(activeCount, 1);
+    });
 });
 
 // ---------------------------------------------------------------------------
@@ -403,6 +426,61 @@ describe("[PATCH] /api/demandes/:id/status", () => {
             status: "accepted",
         });
         assert.strictEqual(status, 401);
+    });
+
+    it("should only accept one of two concurrent acceptances of the same request", async () => {
+        const foster = await createFosterUser();
+        const association = await createAssociationUser();
+        const species = await createSpecies();
+        const animal = await createAnimal(association.id, species.id);
+        const request = await prisma.fosterRequest.create({
+            data: { fosterId: foster.id, animalId: animal.id, status: "pending" },
+        });
+        const requester = buildAuthedRequester({ id: association.id, role: "association" });
+
+        const [first, second] = await Promise.all([
+            requester.patch(`/demandes/${request.id}/status`, { status: "accepted" }),
+            requester.patch(`/demandes/${request.id}/status`, { status: "accepted" }),
+        ]);
+        const statuses = [first.status, second.status].sort();
+
+        assert.deepStrictEqual(statuses, [200, 409]);
+
+        const updatedRequest = await prisma.fosterRequest.findUnique({ where: { id: request.id } });
+        assert.strictEqual(updatedRequest?.status, "accepted");
+    });
+
+    it("should only accept one of two candidates when both are accepted concurrently for the same animal", async () => {
+        const foster = await createFosterUser();
+        const otherFoster = await createFosterUser();
+        const association = await createAssociationUser();
+        const species = await createSpecies();
+        const animal = await createAnimal(association.id, species.id);
+        const request = await prisma.fosterRequest.create({
+            data: { fosterId: foster.id, animalId: animal.id, status: "pending" },
+        });
+        const otherRequest = await prisma.fosterRequest.create({
+            data: { fosterId: otherFoster.id, animalId: animal.id, status: "pending" },
+        });
+        const requester = buildAuthedRequester({ id: association.id, role: "association" });
+
+        const [first, second] = await Promise.all([
+            requester.patch(`/demandes/${request.id}/status`, { status: "accepted" }),
+            requester.patch(`/demandes/${otherRequest.id}/status`, { status: "accepted" }),
+        ]);
+        const statuses = [first.status, second.status].sort();
+
+        // L'une des deux passe (200) ; l'autre trouve l'animal déjà passé en
+        // accueil par la première transaction et échoue avec 409.
+        assert.deepStrictEqual(statuses, [200, 409]);
+
+        const acceptedCount = await prisma.fosterRequest.count({
+            where: { animalId: animal.id, status: "accepted" },
+        });
+        assert.strictEqual(acceptedCount, 1);
+
+        const updatedAnimal = await prisma.animal.findUnique({ where: { id: animal.id } });
+        assert.strictEqual(updatedAnimal?.status, "in_foster_care");
     });
 });
 
