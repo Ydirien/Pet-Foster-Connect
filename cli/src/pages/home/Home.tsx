@@ -12,7 +12,7 @@ import "./Home.css";
 const STATS = [
     "Publiez ou trouvez un animal à accueillir en quelques minutes",
     "Suivez vos demandes d'accueil du dépôt jusqu'à la réponse",
-    "Échangez directement avec l'association, sans intermédiaire",
+    "Envoyez votre demande d'accueil directement à l'association",
 ];
 
 const STEPS = [
