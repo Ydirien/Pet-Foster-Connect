@@ -12,14 +12,14 @@ export function LegalNotice() {
                 <h2>Éditeur du site</h2>
                 <p>
                     Pet Foster Connect<br />
-                    [Ton nom / statut, ex : projet réalisé dans le cadre d'une formation]<br />
-                    Contact : [ton email]
+                    Gaëtan Plassard<br />
+                    Contact : gaetan.plassard@hotmail.fr
                 </p>
             </div>
 
             <div className="legal-notice__block">
                 <h2>Hébergement</h2>
-                <p>[Nom de l'hébergeur, ex : Render, Railway, etc.]</p>
+                <p>Aucun hébergeur</p>
             </div>
 
             <div className="legal-notice__block">
