@@ -38,6 +38,10 @@ services:
     environment:
       # Écrase DATABASE_URL du .env : dans Docker, la DB est joignable via le nom du service "db" sur le port interne 5432
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      # api/.env ne définit pas NODE_ENV : sans cette ligne, le conteneur tourne
+      # avec NODE_ENV vide, ce qui désactive la vraie limite anti brute-force
+      # (rate limit) et le cookie "secure" prévus pour la production.
+      NODE_ENV: production
     ports:
       - ${API_LOCAL_PORT}:3000
 
