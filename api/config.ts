@@ -9,6 +9,13 @@ function requireEnv(name: string): string {
 // passer un tableau. Une liste séparée par des virgules couvre ce cas sans
 // changer le format pour l'usage courant (une seule origine).
 const allowedOriginsEnv = process.env.ALLOWED_ORIGINS;
+
+// "*" n'est acceptable qu'en dev local : en production, ALLOWED_ORIGINS doit
+// être défini explicitement, sinon n'importe quel site pourrait appeler l'API.
+if (!allowedOriginsEnv && process.env.NODE_ENV === "production") {
+    throw new Error("Missing required environment variable: ALLOWED_ORIGINS");
+}
+
 const allowedOrigins = allowedOriginsEnv
     ? allowedOriginsEnv.split(",").map((origin) => origin.trim())
     : "*";
