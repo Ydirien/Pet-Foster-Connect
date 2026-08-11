@@ -1,32 +1,46 @@
-# React + TypeScript + Vite
+# Pet Foster Connect — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Interface web du projet Pet Foster Connect, développée avec React, TypeScript et Vite.
 
-Currently, two official plugins are available:
+Pour une présentation générale du projet (fonctionnalités, stack complète, démarrage avec Docker), voir le [README à la racine du dépôt](../README.md).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Prérequis
 
-## React Compiler
+- Node.js 24 ou une version compatible
+- L'API du projet (dossier `api/`) doit tourner pour que l'application ait des données à afficher
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Variables d'environnement
 
-## Expanding the Oxlint configuration
+Copier `.env.example` en `.env` et renseigner l'URL de l'API :
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```env
+VITE_API_URL=http://localhost:3010/api
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Scripts disponibles
+
+| Commande | Description |
+|---|---|
+| `npm run dev` | Lance le serveur de développement Vite |
+| `npm run build` | Vérifie le typage TypeScript puis génère le build de production |
+| `npm run preview` | Prévisualise le build de production en local |
+| `npm run lint` | Analyse le code avec Oxlint |
+| `npm test` | Exécute les tests une fois (Vitest) |
+| `npm run test:watch` | Exécute les tests en mode watch |
+
+## Structure du projet
+
+```text
+src/
+├── assets/       # Images, logos
+├── components/   # Composants réutilisables (auth, layout, common)
+├── context/      # Contexte React (authentification)
+├── hooks/        # Hooks personnalisés
+├── pages/        # Pages de l'application, une par route
+├── routes/       # Déclaration des routes (React Router)
+├── services/     # Appels à l'API
+├── styles/       # Variables CSS globales (couleurs, typographies, espacements)
+└── types/        # Types TypeScript partagés
+```
+
+Le détail du cahier des charges, des maquettes et des documents de conception se trouve dans le dossier [`Docs/`](../Docs/) à la racine du dépôt.
