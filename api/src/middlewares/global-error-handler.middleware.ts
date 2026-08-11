@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import { HttpClientError } from "../lib/errors.ts";
 import z from "zod";
 import { logger } from "../lib/logger.ts";
+import { Prisma } from "../models/index.ts";
 
 export function globalErrorHandler(
     error: Error,
@@ -38,10 +39,33 @@ export function globalErrorHandler(
         });
     }
 
+    // 3) Gérer le JSON malformé envoyé par le client (body-parser) -> 400
+    // ex : un body tronqué ou avec une virgule en trop
+    if (error instanceof SyntaxError && "type" in error && error.type === "entity.parse.failed") {
+        logger.info("JSON malformé", error);
+
+        return res.status(400).json({
+        status: 400,
+        error: "JSON invalide",
+        });
+    }
+
+    // 4) Gérer les erreurs Prisma connues non rattrapées ailleurs (ex : une
+    // valeur rejetée par la base de données) -> 400, ce n'est pas le serveur
+    // qui a un problème, c'est une donnée envoyée par le client
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        logger.info("PrismaClientKnownRequestError", error);
+
+        return res.status(400).json({
+        status: 400,
+        error: "Données invalides",
+        });
+    }
+
     // Si l'erreur arrive à ce stade, il faut la logger avec un niveau approprié
     logger.error("Internal server error", error);
 
-    // 4) Gérer les erreurs serveurs - 500
+    // 5) Gérer les erreurs serveurs - 500
     // Toutes les erreurs non controllées
     // - ex : la BDD plante
     // - ex : on a fait une erreur de syntaxe
