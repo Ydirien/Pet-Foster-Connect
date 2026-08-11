@@ -51,7 +51,18 @@ export function CityRadiusFilter({ value, onChange, idPrefix }: CityRadiusFilter
 
     return (
         <>
-            <div className="city-radius-filter__field">
+            <div
+                className="city-radius-filter__field"
+                onBlur={(event) => {
+                    // On ferme la liste seulement si le focus part vraiment en dehors
+                    // de ce bloc. Sinon, un utilisateur qui navigue au clavier (Tab)
+                    // depuis le champ vers un bouton de suggestion verrait la liste
+                    // se fermer avant d'avoir pu choisir une suggestion.
+                    if (!event.currentTarget.contains(event.relatedTarget)) {
+                        setIsSuggestionsOpen(false);
+                    }
+                }}
+            >
                 <label htmlFor={cityInputId}>Ville</label>
                 <input
                     id={cityInputId}
@@ -65,13 +76,16 @@ export function CityRadiusFilter({ value, onChange, idPrefix }: CityRadiusFilter
                         setIsSuggestionsOpen(true);
                     }}
                     onFocus={() => setIsSuggestionsOpen(true)}
-                    onBlur={() => setTimeout(() => setIsSuggestionsOpen(false), 150)}
                 />
                 {isSuggestionsOpen && suggestions.length > 0 && (
                     <ul className="city-radius-filter__suggestions">
                         {suggestions.map((suggestion) => (
                             <li key={suggestion.label}>
-                                <button type="button" onMouseDown={() => selectCity(suggestion)}>
+                                <button
+                                    type="button"
+                                    onMouseDown={() => selectCity(suggestion)}
+                                    onClick={() => selectCity(suggestion)}
+                                >
                                     {suggestion.label}
                                 </button>
                             </li>
