@@ -81,7 +81,7 @@ export function ReceivedRequests() {
                 </button>
             </div>
 
-            {error && <p className="received-requests__error">{error}</p>}
+            {error && <p className="received-requests__error" role="alert">{error}</p>}
 
             {visibleRequests.length === 0 ? (
                 <p className="received-requests__state">Aucune demande à afficher.</p>

@@ -85,7 +85,7 @@ export function ResetPassword() {
                             required
                         />
 
-                        {error && <p className="password-reset__error">{error}</p>}
+                        {error && <p className="password-reset__error" role="alert">{error}</p>}
 
                         <button type="submit" className="password-reset__submit" disabled={isSubmitting}>
                             {isSubmitting ? "Réinitialisation..." : "Réinitialiser le mot de passe"}

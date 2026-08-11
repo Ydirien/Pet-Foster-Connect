@@ -203,7 +203,7 @@ export function Register() {
                         </div>
                     </div>
 
-                    {error && <p className="register__error">{error}</p>}
+                    {error && <p className="register__error" role="alert">{error}</p>}
 
                     <button type="submit" className="register__submit" disabled={isSubmitting}>
                         {isSubmitting ? "Création..." : "Créer mon compte"}

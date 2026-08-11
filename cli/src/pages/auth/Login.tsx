@@ -75,7 +75,7 @@ export function Login() {
 
                     <Link to="/mot-de-passe-oublie" className="login__forgot">Mot de passe oublié ?</Link>
 
-                    {error && <p className="login__error">{error}</p>}
+                    {error && <p className="login__error" role="alert">{error}</p>}
 
                     <button type="submit" className="login__submit" disabled={isSubmitting}>
                         {isSubmitting ? "Connexion..." : "Se connecter"}

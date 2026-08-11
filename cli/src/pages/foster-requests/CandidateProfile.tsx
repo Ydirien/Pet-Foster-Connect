@@ -216,7 +216,7 @@ export function CandidateProfile() {
                 <p className="candidate-profile__budget-caption">Nourriture, vétérinaire et accessoires</p>
             </div>
 
-            {error && <p className="candidate-profile__error">{error}</p>}
+            {error && <p className="candidate-profile__error" role="alert">{error}</p>}
 
             {request.status === "pending" ? (
                 <div className="candidate-profile__actions">

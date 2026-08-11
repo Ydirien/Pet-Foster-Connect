@@ -60,7 +60,7 @@ export function ForgotPassword() {
                                 required
                             />
 
-                            {error && <p className="password-reset__error">{error}</p>}
+                            {error && <p className="password-reset__error" role="alert">{error}</p>}
 
                             <button type="submit" className="password-reset__submit" disabled={isSubmitting}>
                                 {isSubmitting ? "Envoi..." : "Envoyer le lien"}

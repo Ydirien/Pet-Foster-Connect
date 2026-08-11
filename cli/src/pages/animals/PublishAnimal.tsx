@@ -313,7 +313,7 @@ export function PublishAnimal() {
                     ))}
                 </div>
 
-                {error && <p className="publish-animal__error">{error}</p>}
+                {error && <p className="publish-animal__error" role="alert">{error}</p>}
 
                 <button
                     type="submit"

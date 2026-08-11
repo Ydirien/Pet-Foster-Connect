@@ -397,7 +397,7 @@ export function EditFosterProfile({ account }: EditFosterProfileProps) {
                 </div>
             </div>
 
-            {error && <p className="edit-profile__error">{error}</p>}
+            {error && <p className="edit-profile__error" role="alert">{error}</p>}
 
             <button type="submit" className="edit-profile__submit" disabled={isSubmitting}>
                 {isSubmitting ? "Enregistrement..." : "Enregistrer"}

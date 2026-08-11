@@ -65,7 +65,7 @@ export function AnimalDetail() {
                 value={message}
                 onChange={(event) => setMessage(event.target.value)}
             />
-            {requestError && <p className="foster-request__error">{requestError}</p>}
+            {requestError && <p className="foster-request__error" role="alert">{requestError}</p>}
             <button type="button" className="btn" onClick={handleSendRequest} disabled={isSubmitting}>
                 {isSubmitting ? "Envoi..." : "Confirmer la demande"}
             </button>
