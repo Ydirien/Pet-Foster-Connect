@@ -216,7 +216,7 @@ export function Register() {
 
                 <p className="register__legal">
                     En créant un compte, vous acceptez nos{" "}
-                    <Link to="/mentions-legales">mentions légales</Link>.
+                    <Link to="/mentions-legales">mentions légales</Link> et notre{" "}
                     <Link to="/politique-de-confidentialite">politique de confidentialité</Link>.
                 </p>
             </div>
