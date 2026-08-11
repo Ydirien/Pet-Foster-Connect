@@ -154,6 +154,15 @@ describe("[POST] /api/auth/register", () => {
         assert.strictEqual(status, 400);
     });
 
+    it("should return 400 if firstName is longer than the database column", async () => {
+        const { status } = await anonymousRequester.post(
+            "/auth/register",
+            validFosterPayload({ firstName: "a".repeat(51) }),
+        );
+
+        assert.strictEqual(status, 400);
+    });
+
     it("should return 400 if the role is missing or invalid", async () => {
         const { status } = await anonymousRequester.post("/auth/register", {
             email: "no-role@example.com",
