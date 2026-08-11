@@ -91,7 +91,7 @@ export function ReceivedRequests() {
                         <article key={request.id} className="request-card">
                             <div className="request-card__header">
                                 {request.foster?.imageUrl ? (
-                                    <img className="request-card__avatar" src={request.foster.imageUrl} alt="" />
+                                    <img className="request-card__avatar" src={request.foster.imageUrl} alt="" loading="lazy" />
                                 ) : (
                                     <div className="request-card__avatar request-card__avatar--placeholder" />
                                 )}

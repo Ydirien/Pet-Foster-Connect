@@ -106,7 +106,7 @@ export function Home() {
                     {STEPS.map((step) => (
                         <article className="tutorial-card" key={step.number}>
                             <div className="tutorial-card__image-wrapper">
-                                <img className="tutorial-card__image" src={step.image} alt="" />
+                                <img className="tutorial-card__image" src={step.image} alt="" loading="lazy" />
                                 <span className="tutorial-card__number">{step.number}</span>
                             </div>
                             <h3 className="tutorial-card__title">{step.title}</h3>

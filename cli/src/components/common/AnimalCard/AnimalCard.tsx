@@ -12,7 +12,7 @@ export function AnimalCard({ animal }: AnimalCardProps) {
         <Link to={`/animaux/${animal.slug}`} className="animal-card">
             <div className="animal-card__image-wrapper">
                 {animal.imageUrl ? (
-                    <img className="animal-card__image" src={animal.imageUrl} alt="" />
+                    <img className="animal-card__image" src={animal.imageUrl} alt="" loading="lazy" />
                 ) : (
                     <div className="animal-card__image animal-card__image--placeholder" />
                 )}

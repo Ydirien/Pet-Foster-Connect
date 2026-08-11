@@ -59,7 +59,7 @@ export function Associations() {
                                 className="association-card"
                             >
                                 {association.imageUrl ? (
-                                    <img className="association-card__icon association-card__icon--photo" src={association.imageUrl} alt="" />
+                                    <img className="association-card__icon association-card__icon--photo" src={association.imageUrl} alt="" loading="lazy" />
                                 ) : (
                                     <div className="association-card__icon">
                                         <Home size={20} strokeWidth={1.8} />
