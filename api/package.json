@@ -12,7 +12,8 @@
     "typecheck": "tsc --noEmit",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
-    "db:seed": "node --env-file=.env prisma/seed.ts"
+    "db:seed": "node --env-file=.env prisma/seed.ts",
+    "test:load": "node --env-file=.env scripts/load-test.ts"
   },
   "keywords": [],
   "author": "",
@@ -35,6 +36,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@types/autocannon": "^7.12.7",
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
