@@ -1,5 +1,7 @@
 # Pet Foster Connect
 
+[![CI - Tests and quality](https://github.com/Ydirien/Pet-Foster-Connect/actions/workflows/ci.yml/badge.svg)](https://github.com/Ydirien/Pet-Foster-Connect/actions/workflows/ci.yml)
+
 Plateforme web mettant en relation des **associations de protection animale** et des **familles d'accueil** pour l'accueil temporaire d'animaux (chiens, chats, etc.) en attente d'adoption.
 
 Les associations publient des fiches animaux, et les familles d'accueil créent un profil (logement, expérience, disponibilités) puis envoient des demandes d'accueil que les associations peuvent accepter ou refuser.
@@ -22,7 +24,7 @@ Les associations publient des fiches animaux, et les familles d'accueil créent 
 | Backend (`api/`) | Node.js, Express 5, TypeScript, Prisma (PostgreSQL) |
 | Base de données | PostgreSQL 17 |
 | Auth | JWT (access/refresh tokens), Argon2 pour le hash des mots de passe |
-| Autres | Zod (validation), Helmet, express-rate-limit, express-xss-sanitizer, Winston (logs), Sharp (traitement d'images), Nodemailer (mails) |
+| Autres | Zod (validation), Helmet, express-rate-limit, express-xss-sanitizer, Winston (logs), Sharp (traitement d'images) |
 | Infra | Docker / Docker Compose (db, api, front, adminer) |
 
 ## Prérequis
