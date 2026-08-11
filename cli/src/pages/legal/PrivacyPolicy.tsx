@@ -50,8 +50,8 @@ export function PrivacyPolicy() {
                 <p>
                     Conformément au Règlement Général sur la Protection des Données (RGPD), vous
                     disposez d'un droit d'accès, de rectification, de suppression et de portabilité
-                    de vos données. Vous pouvez exercer ces droits en nous contactant à [ton email
-                    de contact].
+                    de vos données. Vous pouvez exercer ces droits en nous contactant à
+                    gaetan.plassard@hotmail.fr.
                 </p>
             </div>
 
