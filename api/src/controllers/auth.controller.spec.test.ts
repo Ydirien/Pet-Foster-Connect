@@ -427,6 +427,32 @@ describe("[POST] /api/auth/reset-password", () => {
         assert.strictEqual(remaining, null);
     });
 
+    it("should revoke existing refresh tokens after a successful reset", async () => {
+        const user = await createFosterUser();
+        await prisma.refreshToken.create({
+            data: {
+                token: "refresh-token-avant-reset",
+                userId: user.id,
+                expiresAt: new Date(Date.now() + 60_000),
+            },
+        });
+        await prisma.passwordResetToken.create({
+            data: {
+                token: "reset-token-revocation",
+                userId: user.id,
+                expiresAt: new Date(Date.now() + 60_000),
+            },
+        });
+
+        await anonymousRequester.post("/auth/reset-password", {
+            token: "reset-token-revocation",
+            newPassword: "NouveauMotDePasse1",
+        });
+
+        const remaining = await prisma.refreshToken.findMany({ where: { userId: user.id } });
+        assert.strictEqual(remaining.length, 0);
+    });
+
     it("should return 401 for an unknown token", async () => {
         const { status } = await anonymousRequester.post("/auth/reset-password", {
             token: "token-inexistant",

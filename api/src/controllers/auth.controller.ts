@@ -256,6 +256,10 @@ export async function resetPassword(req: Request, res: Response) {
 
     await prisma.passwordResetToken.delete({ where: { id: existingToken.id } });
 
+    // Un refresh token volé avant le reset resterait sinon valide après :
+    // on déconnecte tous les appareils, comme pour un logout.
+    await prisma.refreshToken.deleteMany({ where: { userId: existingToken.userId } });
+
     res.status(204).end();
 }
 
