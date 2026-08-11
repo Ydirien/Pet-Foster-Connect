@@ -31,12 +31,27 @@ export function Animals() {
         radiusKm: DEFAULT_RADIUS_KM,
     });
     const [breed, setBreed] = useState("");
+    const [debouncedBreed, setDebouncedBreed] = useState("");
     const [ageCategory, setAgeCategory] = useState<AgeCategory | "">("");
     const [gender, setGender] = useState<Gender | "">("");
     const [neutered, setNeutered] = useState<"" | "true" | "false">("");
     useDocumentTitle("Animaux à accueillir");
 
+    // On attend que l'utilisateur arrête de taper avant de mettre à jour la
+    // recherche, pour ne pas lancer une requête à chaque lettre tapée dans
+    // le champ "Race".
     useEffect(() => {
+        const timeout = setTimeout(() => setDebouncedBreed(breed), 300);
+        return () => clearTimeout(timeout);
+    }, [breed]);
+
+    useEffect(() => {
+        // Si les filtres changent à nouveau avant la fin de cette requête, on
+        // ignore sa réponse : sinon une réponse arrivée en retard pourrait
+        // écraser l'affichage avec un résultat qui ne correspond plus aux
+        // filtres actuels.
+        let isStale = false;
+
         setIsLoading(true);
         listAnimals({
             // Cette page ne montre que les animaux réellement à accueillir.
@@ -49,16 +64,26 @@ export function Animals() {
                     radiusKm: cityRadius.radiusKm,
                     }
                 : {}),
-            ...(breed.trim() ? { breed: breed.trim() } : {}),
+            ...(debouncedBreed.trim() ? { breed: debouncedBreed.trim() } : {}),
             ...(ageCategory ? { ageCategory } : {}),
             ...(gender ? { gender } : {}),
             ...(neutered ? { neutered: neutered === "true" } : {}),
         })
-            .then(setAnimals)
-            .catch(() => setAnimals([]))
-            .finally(() => setIsLoading(false));
+            .then((data) => {
+                if (!isStale) setAnimals(data);
+            })
+            .catch(() => {
+                if (!isStale) setAnimals([]);
+            })
+            .finally(() => {
+                if (!isStale) setIsLoading(false);
+            });
         setVisibleCount(PAGE_SIZE);
-    }, [speciesId, cityRadius, breed, ageCategory, gender, neutered]);
+
+        return () => {
+            isStale = true;
+        };
+    }, [speciesId, cityRadius, debouncedBreed, ageCategory, gender, neutered]);
 
     function resetFilters() {
         setCityRadius({ city: null, radiusKm: DEFAULT_RADIUS_KM });
