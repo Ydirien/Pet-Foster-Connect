@@ -1,53 +1,42 @@
-# Objectif de ce workflow
-# - Lancer les tests de l'API et du front-end
-# - Vérifier que le front-end compile
-name: Run integration tests on API
+name: CI - Tests and quality
 
-# Définir les évènements qui déclenche le workflow
 on:
-  push: # Un push ou un merge va déclencher le workflow
+  push:
     branches:
       - main
-  pull_request: # La création d'une PR vers main va déclencher le workflow
+  pull_request:
     branches:
       - main
 
-# Suites d'étapes qui s'éxécute dans un runner
 jobs:
-  # Nom du job (ce qu'on veut)
-  run_api_tests:
-    # Choix du runner
+  api:
+    name: API - Lint, typecheck and tests
     runs-on: ubuntu-latest
-    # Étapes du job
+
     steps:
-      # Récupérer le code du dépôt dans le runner (action officiel)
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v5
 
-      # Mettre en place Node.js
-      - name: Install Node 24
+      - name: Setup Node.js 24
         uses: actions/setup-node@v5
         with:
-          node-version: "24" # Spécifie la version de Node.js
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: api/package-lock.json
 
-      # Installer les dépendances
-      - name: Install dependencies
+      - name: Install API dependencies
         working-directory: api
-        run: npm install
+        run: npm ci
 
-      # Generate Prisma Client
       - name: Generate Prisma Client
         working-directory: api
         run: npm run db:generate
 
-      # Créer le fichier d'environnement de test (ignoré par Git, recréé ici
-      # avec des identifiants jetables : la base de test n'existe que le
-      # temps du job)
-      - name: Create test env file
+      - name: Create test environment file
         working-directory: api
         run: |
           mkdir -p tests/config
-          cat > tests/config/.env.test << 'EOF'
+          cat > tests/config/.env.test << 'EOF_TEST'
           NODE_ENV=test
           PORT=7357
           POSTGRES_USER=postgres
@@ -58,34 +47,47 @@ jobs:
           ACCESS_TOKEN_SECRET=test-access-token-secret
           ALLOWED_ORIGINS=http://localhost:5173
           LOG_LEVEL=error
-          EOF
+          EOF_TEST
 
-      # Exécuter les tests
-      - name: Run tests
+      - name: Run API lint
         working-directory: api
-        run: npm run test
+        run: npm run lint
 
-  run_cli_build:
+      - name: Run API typecheck
+        working-directory: api
+        run: npm run typecheck
+
+      - name: Run API tests
+        working-directory: api
+        run: npm test
+
+  frontend:
+    name: Frontend - Lint, tests and build
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v5
 
-      - name: Install Node 24
+      - name: Setup Node.js 24
         uses: actions/setup-node@v5
         with:
           node-version: "24"
+          cache: npm
+          cache-dependency-path: cli/package-lock.json
 
-      - name: Install dependencies
+      - name: Install frontend dependencies
         working-directory: cli
-        run: npm install
+        run: npm ci
 
-      # Exécute les tests unitaires des composants et pages du front-end
-      - name: Run front-end tests
+      - name: Run frontend lint
         working-directory: cli
-        run: npm run test
+        run: npm run lint
 
-      # Vérifie que le typage TypeScript et le build Vite passent sans erreur
-      - name: Build front-end
+      - name: Run frontend tests
+        working-directory: cli
+        run: npm test
+
+      - name: Build frontend
         working-directory: cli
         run: npm run build
