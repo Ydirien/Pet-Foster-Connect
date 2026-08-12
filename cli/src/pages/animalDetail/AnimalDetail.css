@@ -1,148 +1,143 @@
 .animal-detail-page {
     max-width: 640px;
     margin: 0 auto;
+    padding: 16px;
 }
 
 /* ==========================================================================
-    Hero (photo de l'animal)
-    Nommé "animal-hero" (pas juste ".hero") : ce nom de classe est aussi
-    utilisé par Home.css pour le hero de la page d'accueil. Le CSS n'étant
-    pas scopé par composant (imports classiques, pas de CSS Modules), un nom
-    générique partagé entre deux fichiers fusionne ses règles partout où la
-    classe apparaît (bug constaté : padding/flex de Home.css qui fuitaient ici).
+    Photo de l'animal
    ========================================================================== */
-.animal-hero {
-    position: relative;
-    margin: 16px;
-    margin-bottom: 0;
-}
-
-.animal-card__image,
-.animal-card__image--placeholder {
+.animal-detail__photo-img {
     display: block;
     width: 100%;
     aspect-ratio: 4 / 3;
     object-fit: cover;
-    border-radius: 20px 20px 0 0;
+    border-radius: 20px;
     background: var(--creme);
 }
 
-/* Bouton "changer la photo" en surimpression, bas-gauche du hero */
-.animal-hero__refresh {
-    position: absolute;
-    bottom: 12px;
-    left: 12px;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    border: none;
-    background: white;
+.animal-detail__photo-placeholder {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    gap: 8px;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border: 2px dashed var(--line);
+    border-radius: 20px;
+    background: var(--creme);
+    color: var(--muted);
+}
+
+.animal-detail__photo-placeholder p {
+    margin: 0;
+    font-size: 13px;
 }
 
 /* ==========================================================================
-    Carte détail animal (fond sauge foncé)
+    Nom et race
    ========================================================================== */
-.animal-detail {
-    margin: 0 16px;
-    background: var(--sauge-dark);
-    border-radius: 0 0 20px 20px;
-    padding: 20px;
-    color: white;
-    box-shadow: var(--shadow-md);
-
+.animal-detail__title {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0 16px;
 }
 
-.animal-detail h1 {
-    font-family: "Poppins", sans-serif;
-    font-weight: 600;
-    font-size: 20px;
-    margin: 0 0 2px;
-    color: white;
+.animal-detail__title h1 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 28px;
+    margin: 0;
+    color: var(--anthracite);
 }
 
-.animal-detail h2 {
-    font-size: 13px;
+.animal-detail__title h2 {
+    font-size: 15px;
     font-weight: 400;
-    color: rgba(255, 255, 255, 0.8);
-    margin: 0 0 16px;
+    color: var(--muted);
+    margin: 0;
 }
 
-.card-detail {
+/* ==========================================================================
+    Tuiles âge / sexe / castré
+   ========================================================================== */
+.animal-detail__stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 8px;
-    margin-bottom: 18px;
+    margin-bottom: 24px;
 }
 
-.birth-date,
-.gender,
-.state {
+.animal-detail__stat {
     background: var(--creme);
     border-radius: 12px;
-    padding: 10px 6px;
+    padding: 12px 6px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 4px;
-    color: var(--sauge-dark);
+    color: var(--terracotta);
 }
 
-.birth-date p:first-of-type,
-.gender p:first-of-type,
-.state p:first-of-type {
+.animal-detail__stat-label {
     font-size: 9px;
     color: var(--muted);
     text-transform: uppercase;
     margin: 0;
 }
 
-.birth-date p:last-of-type,
-.gender p:last-of-type,
-.state p:last-of-type {
-    font-family: "Poppins", sans-serif;
+.animal-detail__stat-value {
+    font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--anthracite);
     margin: 0;
 }
 
-.description h3,
-.incompatible h3 {
-    font-family: "Poppins", sans-serif;
+/* ==========================================================================
+    À propos / incompatibilités
+   ========================================================================== */
+.animal-detail__about {
+    margin-bottom: 24px;
+}
+
+.animal-detail__about h3,
+.animal-detail__incompatible h3 {
+    font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 13px;
+    font-size: 12px;
     text-transform: uppercase;
-    letter-spacing: .3px;
+    letter-spacing: .4px;
+    color: var(--terracotta);
     margin: 0 0 8px;
-    color: white;
 }
 
-.description p {
-    font-size: 13.5px;
+.animal-detail__about p {
+    font-size: 14px;
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.92);
-    margin: 0 0 18px;
+    color: var(--anthracite);
+    margin: 0 0 10px;
 }
 
-.incompatible {
+.animal-detail__incompatible {
+    margin-bottom: 24px;
     padding-top: 16px;
-    border-top: 1px solid rgba(255, 255, 255, 0.25);
+    border-top: 1px solid var(--line);
 }
 
-.incompatible-tags {
+.animal-detail__incompatible-tags {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
 }
 
-.incompatible-tag {
+.animal-detail__incompatible-tag {
     display: inline-block;
-    background: white;
+    background: var(--creme);
+    border: 1px solid var(--line);
     color: var(--anthracite);
     font-size: 11px;
     font-weight: 600;
@@ -151,12 +146,89 @@
 }
 
 /* ==========================================================================
+    Association responsable
+   ========================================================================== */
+.animal-detail__association {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    background: var(--creme);
+    border-radius: 20px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.animal-detail__association-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.animal-detail__association-avatar--placeholder {
+    background: var(--sauge-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.animal-detail__association-info {
+    flex: 1;
+    min-width: 140px;
+}
+
+.animal-detail__association-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+    color: var(--muted);
+    margin: 0 0 2px;
+}
+
+.animal-detail__association-name {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--anthracite);
+    margin: 0;
+}
+
+.animal-detail__association-city {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin: 2px 0 0;
+}
+
+.animal-detail__association-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 999px;
+    background: var(--sauge-dark);
+    color: white;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.animal-detail__association-btn:hover {
+    background: #2f4433;
+}
+
+/* ==========================================================================
     Bouton "Offrir un foyer"
    ========================================================================== */
+.animal-detail__cta {
+    margin-bottom: 8px;
+}
+
 .btn {
     display: block;
-    width: calc(100% - 32px);
-    margin: 16px 16px;
+    width: 100%;
+    box-sizing: border-box;
     padding: 15px;
     border: none;
     border-radius: 999px;
@@ -164,6 +236,7 @@
     color: white;
     font-weight: 600;
     font-size: 15px;
+    text-align: center;
     cursor: pointer;
 }
 
@@ -172,14 +245,13 @@
 }
 
 .btn--disabled {
-    text-align: center;
     background: var(--line);
     color: var(--muted);
     cursor: default;
 }
 
 .foster-request {
-    margin: 16px 16px 0;
+    margin-bottom: 8px;
 }
 
 .foster-request__message {
@@ -201,106 +273,18 @@
 }
 
 /* ==========================================================================
-    Carte association
+    Écrans plus larges : la même colonne unique respire davantage,
+    pas de passage en plusieurs colonnes.
    ========================================================================== */
-.association-detail {
-    /* Marge haute explicite : la section précédente (CTA "Offrir un foyer")
-       peut être vide (ex: vue association), on ne peut pas compter sur ses
-       propres marges pour créer l'espacement avec .animal-detail. */
-    margin: 16px 16px;
-    background: var(--terracotta);
-    border-radius: 20px;
-    padding: 24px 20px;
-    text-align: center;
-    color: white;
-    box-shadow: var(--shadow-md);
+@media (min-width: 768px) {
+    .animal-detail-page {
+        padding: 24px;
+    }
 }
 
-.association-detail__avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    border: 3px solid white;
-    margin: 0 auto 12px;
-    object-fit: cover;
-}
-
-.association-detail__avatar--placeholder {
-    background: var(--sauge);
-}
-
-.association-detail h2 {
-    font-family: "Poppins", sans-serif;
-    font-weight: 600;
-    font-size: 16px;
-    margin: 0 0 6px;
-}
-
-.association-detail p {
-    font-size: 12.5px;
-    line-height: 1.5;
-    margin: 0;
-    color: rgba(255, 255, 255, 0.9);
-}
-
-.association-btn {
-    margin-top: 16px;
-    padding: 12px 28px;
-    border: none;
-    border-radius: 999px;
-    background: var(--sauge-dark);
-    color: white;
-    font-weight: 600;
-    font-size: 13.5px;
-    cursor: pointer;
-}
-
-.association-btn:hover {
-    background: #2f4433;
-}
-
-/* ==========================================================================
-    Desktop : deux colonnes (contenu principal + sidebar collante), au lieu
-    d'une simple colonne mobile étirée. .animal-detail-main et
-    .animal-detail-sidebar sont deux frères directs dans AnimalDetail.tsx.
-   ========================================================================== */
 @media (min-width: 1024px) {
     .animal-detail-page {
-        max-width: 1100px;
-        display: grid;
-        grid-template-columns: minmax(0, 1.65fr) minmax(300px, 1fr);
-        align-items: start;
-        gap: 40px;
-        padding: 40px 40px 80px;
-    }
-
-    .animal-hero {
-        margin: 0;
-    }
-
-    .animal-detail {
-        margin: 0;
-    }
-
-    .animal-detail-sidebar {
-        position: sticky;
-        top: 24px;
-        align-self: start;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .btn {
-        width: 100%;
-        box-sizing: border-box;
-        margin: 0 0 16px;
-    }
-
-    .foster-request {
-        margin: 0 0 16px;
-    }
-
-    .association-detail {
-        margin: 0;
+        max-width: 720px;
+        padding: 40px 0 80px;
     }
 }

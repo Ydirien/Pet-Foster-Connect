@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Calendar, Shield, VenusAndMars } from "lucide-react";
+import { Calendar, Home, Image as ImageIcon, Shield, VenusAndMars } from "lucide-react";
 import type { AnimalDetail as AnimalDetailData } from "../../types/Animal";
 import { getAnimalBySlug } from "../../services/animalService";
 import { createFosterRequest } from "../../services/fosterRequestService";
@@ -82,78 +82,82 @@ export function AnimalDetail() {
 
     return (
         <div className="animal-detail-page">
-        <div className="animal-detail-main">
-        <section className="animal-hero">
-            {animal.imageUrl ? (
-            <img className="animal-card__image" src={animal.imageUrl} alt={`Photo de ${animal.name}`} />
-            ) : (
-            <div className="animal-card__image animal-card__image--placeholder" />
-            )}
-        </section>
+            <section className="animal-detail__photo">
+                {animal.imageUrl ? (
+                    <img className="animal-detail__photo-img" src={animal.imageUrl} alt={`Photo de ${animal.name}`} />
+                ) : (
+                    <div className="animal-detail__photo-placeholder">
+                        <ImageIcon size={28} strokeWidth={1.5} />
+                        <p>Photo de {animal.name}</p>
+                    </div>
+                )}
+            </section>
 
-        <section className="animal-detail">
-            <div>
-            <h1>{animal.name}</h1>
-            <h2>{animal.breed ?? animal.species.name}</h2>
-            </div>
-
-            <div className="card-detail">
-            <div className="birth-date">
-                <Calendar size={16} strokeWidth={1.8} />
-                <p>Âge</p>
-                <p>{animal.age !== null ? `${animal.age} an${animal.age > 1 ? "s" : ""}` : "Non renseigné"}</p>
-            </div>
-            <div className="gender">
-                <VenusAndMars size={16} strokeWidth={1.8} />
-                <p>Sexe</p>
-                <p>{animal.gender === "male" ? "Mâle" : "Femelle"}</p>
-            </div>
-            <div className="state">
-                <Shield size={16} strokeWidth={1.8} />
-                <p>Castré</p>
-                <p>{animal.neutered ? "Oui" : "Non"}</p>
-            </div>
+            <div className="animal-detail__title">
+                <h1>{animal.name}</h1>
+                <h2>{animal.breed ?? animal.species.name}</h2>
             </div>
 
-            <div className="description">
-            <h3>À propos</h3>
-            <p>{animal.behavior ?? "Aucune information sur le comportement pour le moment."}</p>
-            {animal.specificNeeds && <p>{animal.specificNeeds}</p>}
+            <div className="animal-detail__stats">
+                <div className="animal-detail__stat">
+                    <Calendar size={16} strokeWidth={1.8} />
+                    <p className="animal-detail__stat-label">Âge</p>
+                    <p className="animal-detail__stat-value">
+                        {animal.age !== null ? `${animal.age} an${animal.age > 1 ? "s" : ""}` : "Non renseigné"}
+                    </p>
+                </div>
+                <div className="animal-detail__stat">
+                    <VenusAndMars size={16} strokeWidth={1.8} />
+                    <p className="animal-detail__stat-label">Sexe</p>
+                    <p className="animal-detail__stat-value">{animal.gender === "male" ? "Mâle" : "Femelle"}</p>
+                </div>
+                <div className="animal-detail__stat">
+                    <Shield size={16} strokeWidth={1.8} />
+                    <p className="animal-detail__stat-label">Castré</p>
+                    <p className="animal-detail__stat-value">{animal.neutered ? "Oui" : "Non"}</p>
+                </div>
+            </div>
+
+            <div className="animal-detail__about">
+                <h3>À propos</h3>
+                <p>{animal.behavior ?? "Aucune information sur le comportement pour le moment."}</p>
+                {animal.specificNeeds && <p>{animal.specificNeeds}</p>}
             </div>
 
             {animal.incompatibleSpecies.length > 0 && (
-                <div className="incompatible">
+                <div className="animal-detail__incompatible">
                     <h3>Incompatible avec</h3>
-                    <div className="incompatible-tags">
+                    <div className="animal-detail__incompatible-tags">
                         {animal.incompatibleSpecies.map(({ species }) => (
-                            <span key={species.id} className="incompatible-tag">{species.name}</span>
+                            <span key={species.id} className="animal-detail__incompatible-tag">{species.name}</span>
                         ))}
                     </div>
                 </div>
             )}
-        </section>
-        </div>
 
-        <aside className="animal-detail-sidebar">
-            {cta && <section className="animal-detail-cta">{cta}</section>}
-
-            <section className="association-detail">
+            <section className="animal-detail__association">
                 {animal.association.imageUrl ? (
-                    <img className="association-detail__avatar" src={animal.association.imageUrl} alt="" />
+                    <img className="animal-detail__association-avatar" src={animal.association.imageUrl} alt="" />
                 ) : (
-                    <div className="association-detail__avatar association-detail__avatar--placeholder" />
+                    <div className="animal-detail__association-avatar animal-detail__association-avatar--placeholder">
+                        <Home size={22} strokeWidth={1.6} />
+                    </div>
                 )}
-                <h2>{animal.association.name}</h2>
-                <p>{animal.association.city}</p>
+                <div className="animal-detail__association-info">
+                    <p className="animal-detail__association-label">Association responsable</p>
+                    <h2 className="animal-detail__association-name">{animal.association.name}</h2>
+                    <p className="animal-detail__association-city">{animal.association.city}</p>
+                </div>
                 <button
                     type="button"
-                    className="association-btn"
+                    className="animal-detail__association-btn"
                     onClick={() => navigate(`/associations/${animal.association.slug}`)}
                 >
-                    En savoir plus
+                    Voir le profil
                 </button>
             </section>
-        </aside>
+
+            {cta && <section className="animal-detail__cta">{cta}</section>}
         </div>
     );
 }

@@ -59,6 +59,7 @@ export function AssociationAccountView({ account }: AssociationAccountViewProps)
                     <div className="account__avatar account__avatar--placeholder" />
                 )}
                 <div>
+                    <span className="account__badge">Association</span>
                     <h1 className="account__name">{account.profile.name}</h1>
                     <p className="account__since">Membre depuis {memberSince}</p>
                 </div>

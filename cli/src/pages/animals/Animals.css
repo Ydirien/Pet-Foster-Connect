@@ -45,8 +45,8 @@
 }
 
 .filter-panel__field label {
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 700;
     color: var(--anthracite);
 }
 
@@ -54,10 +54,20 @@
 .filter-panel__field select {
     padding: 10px 14px;
     border: 1px solid var(--line);
-    border-radius: 10px;
+    border-radius: 8px;
     font-size: 14px;
     font-family: inherit;
     color: var(--anthracite);
+}
+
+.filter-panel__field select {
+    appearance: none;
+    padding-right: 36px;
+    background-color: white;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%232B2A28' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    cursor: pointer;
 }
 
 .filter-panel__reset {
@@ -122,13 +132,24 @@
    seule sa visibilité change entre mobile et desktop. */
 @media (min-width: 1024px) {
     .animals-layout {
+        position: relative;
         display: grid;
         grid-template-columns: 280px minmax(0, 1fr);
         align-items: start;
         gap: 32px;
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 40px 40px 80px;
+        margin: 0;
+        padding: 40px 40px 80px 20px;
+        flex: 1;
+    }
+
+    .animals-layout::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 316px;
+        width: 1px;
+        background: var(--line);
     }
 
     .filter-bar {
@@ -143,14 +164,21 @@
 
     .filter-panel {
         display: flex;
+        gap: 22px;
         margin-top: 0;
+        padding: 0;
+        border: none;
+        border-radius: 0;
+        background: none;
+        box-shadow: none;
     }
 
     .animals-content {
-        padding: 0;
+        padding: 0 0 0 24px;
     }
 
     .animals-grid {
+        grid-template-columns: repeat(4, 1fr);
         margin-top: 0;
         padding: 0;
     }
